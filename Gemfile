@@ -65,3 +65,9 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
 end
+
+gem 'activeadmin'
+gem 'sass-rails'
+
+# Plus integrations with:
+gem 'devise'
