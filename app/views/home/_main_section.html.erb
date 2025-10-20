@@ -48,109 +48,26 @@
         </div>
     </div>
 
-    <!-- Exam Categories -->
+    <!-- Exams -->
     <section class="categories">
         <div class="container">
             <div class="section-header">
-                <h2>Popular Exam Categories</h2>
+                <h2>Popular Exams</h2>
                 <p>Choose your path to success</p>
             </div>
             <div class="category-grid">
-                <div class="category-card" onclick="showPage('exam-detail')">
+            <% @exams.each do |exam| %>
+                <div class="category-card">
                     <div class="category-icon">
                         <i class="fas fa-briefcase"></i>
                     </div>
-                    <h3>SSC Exams</h3>
-                    <p>CGL, CHSL, MTS, GD & More</p>
-                    <div class="category-stats">
+                    <h3><%= exam.name %></h3>
+                    <%# <div class="category-stats">
                         <span><i class="fas fa-users"></i> 2.5L+</span>
                         <span><i class="fas fa-book"></i> 450+</span>
-                    </div>
+                    </div> %>
                 </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-university"></i>
-                    </div>
-                    <h3>Banking Exams</h3>
-                    <p>IBPS, SBI, RRB & More</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 1.8L+</span>
-                        <span><i class="fas fa-book"></i> 380+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-landmark"></i>
-                    </div>
-                    <h3>UPSC Exams</h3>
-                    <p>IAS, IPS, IFS, NDA, CDS</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 1.2L+</span>
-                        <span><i class="fas fa-book"></i> 320+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-train"></i>
-                    </div>
-                    <h3>Railway Exams</h3>
-                    <p>RRB NTPC, Group D, ALP</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 1.5L+</span>
-                        <span><i class="fas fa-book"></i> 290+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <h3>State Police</h3>
-                    <p>MP, UP, Bihar & More</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 950K+</span>
-                        <span><i class="fas fa-book"></i> 260+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-building"></i>
-                    </div>
-                    <h3>State PSC</h3>
-                    <p>MPPSC, UPPSC, BPSC</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 820K+</span>
-                        <span><i class="fas fa-book"></i> 410+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-user-shield"></i>
-                    </div>
-                    <h3>Defense Exams</h3>
-                    <p>CDS, NDA, AFCAT</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 680K+</span>
-                        <span><i class="fas fa-book"></i> 190+</span>
-                    </div>
-                </div>
-
-                <div class="category-card" onclick="showPage('exam-detail')">
-                    <div class="category-icon">
-                        <i class="fas fa-chalkboard-teacher"></i>
-                    </div>
-                    <h3>Teaching Exams</h3>
-                    <p>CTET, UPTET, KVS, NVS</p>
-                    <div class="category-stats">
-                        <span><i class="fas fa-users"></i> 760K+</span>
-                        <span><i class="fas fa-book"></i> 310+</span>
-                    </div>
-                </div>
+              <% end %>
             </div>
         </div>
     </section>

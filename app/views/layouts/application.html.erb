@@ -13,9 +13,9 @@
 
   <body>
     <%= render "shared/header" %>
-    <%= render "shared/hero" %>
-    <%= render "shared/footer" %>
     <%= yield %>
+    <%= render "shared/footer" %>
+    
     <script>
         function toggleTheme() {
             const html = document.documentElement;
