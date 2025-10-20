@@ -1,0 +1,90 @@
+<section class="exam-section">
+  <div class="container">
+    <h2 class="section-title">Popular Exams</h2>
+
+    <div class="exam-grid">
+      <!-- Example Exam Card -->
+      <% @exams.each do |exam| %>
+        <div class="exam-card">
+          <%= image_tag("exam.jpeg", alt: "SSC Exam", class: "exam-image") %>
+          <div class="exam-content">
+            <h3 class="exam-name"><%= exam.name %></h3>
+            <p class="exam-desc"><%= exam.description %></p>
+            <a href="/exams/<%= exam.id %>" class="btn-view">View Details</a>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>
+
+<style>
+.exam-section {
+  padding: 60px 0;
+  background: #f9fafb;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.exam-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.exam-card {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.exam-card:hover {
+  transform: translateY(-6px);
+}
+
+.exam-image {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.exam-content {
+  padding: 20px;
+  text-align: center;
+}
+
+.exam-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #222;
+}
+
+.exam-desc {
+  font-size: 0.95rem;
+  color: #666;
+  margin: 10px 0 20px;
+}
+
+.btn-view {
+  display: inline-block;
+  background: #2563eb;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  text-decoration: none;
+  transition: background 0.3s ease;
+}
+
+.btn-view:hover {
+  background: #1e40af;
+}
+</style>
