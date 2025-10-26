@@ -1,8 +1,8 @@
 class UserQuizAttemptsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_attempt, only: [:show, :save_answer, :submit_quiz, :result, :solutions]
+  before_action :set_attempt, only: [:show, :save_answer, :submit_quiz, :solutions]
   before_action :check_attempt_status, only: [:show, :save_answer]
-  before_action :check_attempt_completed, only: [:result, :solutions]
+  before_action :check_attempt_completed, only: [:solutions]
 
   def show
     @quiz = @attempt.quiz
@@ -57,15 +57,8 @@ class UserQuizAttemptsController < ApplicationController
       time_taken: time_taken
     )
     
-    redirect_to result_user_quiz_attempt_path(@attempt), 
+    redirect_to solutions_user_quiz_attempt_path(@attempt), 
                 notice: "Quiz submitted successfully!"
-  end
-
-  def result
-    @attempt = current_user.user_quiz_attempts.find(params[:id])
-    @quiz = @attempt.quiz
-    @questions = @quiz.questions
-    @user_answers = @attempt.user_answers 
   end
 
   def solutions

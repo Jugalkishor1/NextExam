@@ -23,7 +23,6 @@ Rails.application.routes.draw do
     member do
       post :submit_quiz
       patch :save_answer
-      get :result
       get :solutions
     end
   end
