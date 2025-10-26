@@ -325,7 +325,9 @@
   </div>
 
   <div class="action-buttons">
-    <%= link_to "View Solutions", "#", class: "btn btn-primary" %>
+    <%= link_to "View Solutions", solutions_user_quiz_attempt_path(@attempt),
+      class: "btn btn-primary",
+      data: { turbo: false } %>
     <%= button_to "Try Again", start_attempt_quiz_path(@attempt.quiz), method: :post, class: "btn btn-secondary", data: { turbo: false } %>
     <%= link_to "Back to Quizzes", quizzes_path, class: "btn btn-secondary" %>
   </div>

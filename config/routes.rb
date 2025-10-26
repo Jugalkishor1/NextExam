@@ -11,9 +11,11 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
   resources :exams, only: [:index, :show]
+  
   resources :quizzes, only: [:index, :show] do
     member do
-      post :start_attempt  # Create new attempt
+      post :start_attempt
+      get :my_attempts
     end
   end
 
@@ -21,7 +23,8 @@ Rails.application.routes.draw do
     member do
       post :submit_quiz
       patch :save_answer
-      get :result  # Add this route
+      get :result
+      get :solutions
     end
   end
 end

@@ -1,0 +1,547 @@
+<style>
+  .solutions-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+    background: #f8fafc;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .breadcrumb a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb span {
+    color: #cbd5e1;
+  }
+
+  .solutions-header {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  .header-content h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .header-content p {
+    color: #64748b;
+    margin: 0;
+  }
+
+  .score-badge {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    text-align: center;
+  }
+
+  .score-label {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    margin-bottom: 0.25rem;
+  }
+
+  .score-value {
+    font-size: 2rem;
+    font-weight: 700;
+  }
+
+  .legend-bar {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+  }
+
+  .legend-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 6px;
+    border: 2px solid;
+  }
+
+  .legend-icon.correct {
+    background: #d1fae5;
+    border-color: #10b981;
+  }
+
+  .legend-icon.wrong {
+    background: #fee2e2;
+    border-color: #ef4444;
+  }
+
+  .legend-icon.skipped {
+    background: #fef3c7;
+    border-color: #f59e0b;
+  }
+
+  .solution-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem;
+    position: relative;
+    display: none; /* hide all by default */
+  }
+
+  .solution-card.correct {
+    border-left: 4px solid #10b981;
+  }
+
+  .solution-card.wrong {
+    border-left: 4px solid #ef4444;
+  }
+
+  .solution-card.skipped {
+    border-left: 4px solid #f59e0b;
+  }
+
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.5rem;
+    gap: 1rem;
+  }
+
+  .question-number {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #667eea;
+    background: #e0e7ff;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+  }
+
+  .result-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .result-badge.correct {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .result-badge.wrong {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+
+  .result-badge.skipped {
+    background: #fef3c7;
+    color: #92400e;
+  }
+
+  .question-content {
+    font-size: 1.125rem;
+    color: #1a202c;
+    line-height: 1.8;
+    margin-bottom: 1.5rem;
+    font-weight: 500;
+  }
+
+  .options-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .option-item {
+    padding: 1.25rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .option-item.correct-answer {
+    background: #d1fae5;
+    border-color: #10b981;
+    border-width: 2px;
+  }
+
+  .option-item.wrong-answer {
+    background: #fee2e2;
+    border-color: #ef4444;
+    border-width: 2px;
+  }
+
+  .option-item.not-selected {
+    opacity: 0.6;
+  }
+
+  .option-marker {
+    width: 28px;
+    height: 28px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+  }
+
+  .option-item.correct-answer .option-marker {
+    background: #10b981;
+    border-color: #10b981;
+    color: white;
+  }
+
+  .option-item.wrong-answer .option-marker {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: white;
+  }
+
+  .option-text {
+    flex: 1;
+    color: #334155;
+    line-height: 1.6;
+  }
+
+  .option-label {
+    position: absolute;
+    top: -10px;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .option-label.correct {
+    background: #10b981;
+    color: white;
+  }
+
+  .option-label.your-answer {
+    background: #667eea;
+    color: white;
+  }
+
+  .explanation-box {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .explanation-title {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .explanation-text {
+    color: #64748b;
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .back-button {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    transition: all 0.2s;
+    z-index: 100;
+  }
+
+  .back-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  }
+
+  .nav-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+
+  .nav-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 0.8rem 1.8rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+    transition: all 0.2s;
+  }
+
+  .nav-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
+  }
+
+  @media (max-width: 768px) {
+    .solutions-header {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .legend-bar {
+      gap: 1rem;
+    }
+
+    .back-button {
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.875rem 1.5rem;
+      font-size: 0.875rem;
+    }
+  }
+</style>
+
+<div class="solutions-container">
+  <div class="breadcrumb">
+    <%= link_to "Quizzes", quizzes_path %>
+    <span>/</span>
+    <%= link_to @quiz.title, quiz_path(@quiz) %>
+    <span>/</span>
+    <%= link_to "My Attempts", my_attempts_quiz_path(@quiz) %>
+    <span>/</span>
+    <span>Solutions</span>
+  </div>
+
+  <%
+    correct_count = @attempt.user_answers.where(is_correct: true).count
+    wrong_count = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
+    skipped_count = @questions.count - @attempt.user_answers.where.not(option_id: nil).count
+  %>
+
+  <div class="solutions-header">
+    <div class="header-content">
+      <h1>Solutions & Explanations</h1>
+      <p><%= @quiz.title %> - Attempt on <%= @attempt.completed_at.strftime("%B %d, %Y") %></p>
+    </div>
+    <div class="score-badge">
+      <div class="score-label">Your Score</div>
+      <div class="score-value"><%= @attempt.percentage_score.round %>%</div>
+    </div>
+  </div>
+
+  <div class="legend-bar">
+    <div class="legend-item">
+      <div class="legend-icon correct"></div>
+      <span>Correct (<%= correct_count %>)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon wrong"></div>
+      <span>Wrong (<%= wrong_count %>)</span>
+    </div>
+    <div class="legend-item">
+      <div class="legend-icon skipped"></div>
+      <span>Skipped (<%= skipped_count %>)</span>
+    </div>
+  </div>
+
+  <div class="questions-list">
+    <% @questions.each_with_index do |question, index| %>
+      <% 
+        user_answer = @user_answers[question.id]
+        user_option_id = user_answer&.option_id
+        is_correct = user_answer&.is_correct
+        is_skipped = user_option_id.nil?
+
+        card_class = if is_skipped
+          'skipped'
+        elsif is_correct
+          'correct'
+        else
+          'wrong'
+        end
+
+        result_text = if is_skipped
+          'Not Attempted'
+        elsif is_correct
+          'Correct'
+        else
+          'Wrong'
+        end
+
+        result_icon = if is_skipped
+          '⊝'
+        elsif is_correct
+          '✓'
+        else
+          '✗'
+        end
+      %>
+
+      <div class="solution-card <%= card_class %>">
+        <div class="question-header">
+          <span class="question-number">Question <%= index + 1 %> of <%= @questions.count %></span>
+          <span class="result-badge <%= card_class %>">
+            <%= result_icon %> <%= result_text %>
+          </span>
+        </div>
+
+        <div class="question-content">
+          <%= question.content %>
+        </div>
+
+        <div class="options-list">
+          <% question.options.each do |option| %>
+            <%
+              is_user_answer = option.id == user_option_id
+              is_correct_option = option.is_correct
+              
+              option_class = if is_correct_option
+                'correct-answer'
+              elsif is_user_answer && !is_correct_option
+                'wrong-answer'
+              elsif !is_user_answer
+                'not-selected'
+              end
+            %>
+
+            <div class="option-item <%= option_class %>">
+              <span class="option-marker">
+                <% if is_correct_option %>
+                  ✓
+                <% elsif is_user_answer %>
+                  ✗
+                <% end %>
+              </span>
+              <span class="option-text"><%= option.content %></span>
+
+              <% if is_correct_option %>
+                <span class="option-label correct">Correct Answer</span>
+              <% elsif is_user_answer %>
+                <span class="option-label your-answer">Your Answer</span>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
+
+        <div class="explanation-box">
+          <h4 class="explanation-title">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+            </svg>
+            Explanation
+          </h4>
+          <p class="explanation-text">
+            The correct answer is "<%= question.options.find_by(is_correct: true).content %>".
+            <% if is_correct %>
+              Great job! You got this question right.
+            <% elsif is_skipped %>
+              You didn't attempt this question.
+            <% else %>
+              You selected "<%= question.options.find_by(id: user_option_id)&.content %>", which is incorrect.
+            <% end %>
+          </p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div class="nav-buttons">
+    <button id="prevBtn" class="nav-btn">← Previous</button>
+    <button id="nextBtn" class="nav-btn">Next →</button>
+  </div>
+
+  <%= link_to my_attempts_quiz_path(@quiz), class: "back-button" do %>
+    ← Back to Attempts
+  <% end %>
+</div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const questions = document.querySelectorAll(".solution-card");
+    let currentIndex = 0;
+
+    function showQuestion(index) {
+      questions.forEach((q, i) => {
+        q.style.display = i === index ? "block" : "none";
+      });
+
+      document.getElementById("prevBtn").style.display = index === 0 ? "none" : "inline-block";
+      document.getElementById("nextBtn").style.display = index === questions.length - 1 ? "none" : "inline-block";
+    }
+
+    document.getElementById("nextBtn").addEventListener("click", () => {
+      if (currentIndex < questions.length - 1) {
+        currentIndex++;
+        showQuestion(currentIndex);
+      }
+    });
+
+    document.getElementById("prevBtn").addEventListener("click", () => {
+      if (currentIndex > 0) {
+        currentIndex--;
+        showQuestion(currentIndex);
+      }
+    });
+
+    showQuestion(currentIndex);
+  });
+</script>

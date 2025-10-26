@@ -1,7 +1,8 @@
 class UserQuizAttemptsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_attempt, only: [:show, :save_answer, :submit_quiz, :result]
+  before_action :set_attempt, only: [:show, :save_answer, :submit_quiz, :result, :solutions]
   before_action :check_attempt_status, only: [:show, :save_answer]
+  before_action :check_attempt_completed, only: [:result, :solutions]
 
   def show
     @quiz = @attempt.quiz
@@ -67,6 +68,12 @@ class UserQuizAttemptsController < ApplicationController
     @user_answers = @attempt.user_answers 
   end
 
+  def solutions
+    @quiz = @attempt.quiz
+    @questions = @quiz.questions.includes(:options).order(:id)
+    @user_answers = @attempt.user_answers.includes(:option, :question).index_by(&:question_id)
+  end
+
   private
 
   def set_attempt
@@ -77,6 +84,13 @@ class UserQuizAttemptsController < ApplicationController
     if @attempt.completed?
       redirect_to result_user_quiz_attempt_path(@attempt), 
                   alert: "This quiz has already been completed."
+    end
+  end
+
+  def check_attempt_completed
+    unless @attempt.completed?
+      redirect_to user_quiz_attempt_path(@attempt),
+                  alert: "Please complete the quiz first."
     end
   end
 end

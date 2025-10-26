@@ -31,6 +31,14 @@ class QuizzesController < ApplicationController
     redirect_to user_quiz_attempt_path(@attempt)
   end
 
+  def my_attempts
+    @quiz = Quiz.find(params[:id])
+    @attempts = current_user.user_quiz_attempts
+                           .where(quiz: @quiz)
+                           .order(created_at: :desc)
+                           .includes(:user_answers)
+  end
+
   private
 
   def set_quiz

@@ -1,0 +1,349 @@
+<style>
+  .attempts-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .breadcrumb a {
+    color: #3b82f6;
+    text-decoration: none;
+  }
+
+  .breadcrumb a:hover {
+    text-decoration: underline;
+  }
+
+  .breadcrumb span {
+    color: #cbd5e1;
+  }
+
+  .page-header {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .page-header h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .page-header p {
+    color: #64748b;
+    margin: 0;
+  }
+
+  .attempts-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .attempt-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .attempt-card:hover {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  }
+
+  .attempt-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .attempt-number {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  .attempt-date {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+
+  .attempt-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .stat-box {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.25rem;
+  }
+
+  .stat-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .stat-value.score {
+    color: #667eea;
+  }
+
+  .stat-value.correct {
+    color: #10b981;
+  }
+
+  .stat-value.wrong {
+    color: #ef4444;
+  }
+
+  .performance-indicator {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+
+  .performance-excellent {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .performance-good {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .performance-average {
+    background: #fed7aa;
+    color: #92400e;
+  }
+
+  .performance-poor {
+    background: #fecaca;
+    color: #991b1b;
+  }
+
+  .attempt-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.625rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.875rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+    border: 2px solid;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-secondary {
+    background: white;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+
+  .btn-secondary:hover {
+    border-color: #667eea;
+    color: #667eea;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+  }
+
+  .empty-state svg {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 1rem;
+    opacity: 0.5;
+    color: #94a3b8;
+  }
+
+  .empty-state h3 {
+    font-size: 1.25rem;
+    color: #1a202c;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .empty-state p {
+    color: #64748b;
+    margin: 0 0 1.5rem 0;
+  }
+
+  @media (max-width: 640px) {
+    .attempt-header {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .attempt-stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .attempt-actions {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<div class="attempts-container">
+  <div class="breadcrumb">
+    <%= link_to "Quizzes", quizzes_path %> 
+    <span>/</span> 
+    <%= link_to @quiz.title, quiz_path(@quiz) %>
+    <span>/</span> 
+    <span>My Attempts</span>
+  </div>
+
+  <div class="page-header">
+    <h1>My Attempts - <%= @quiz.title %></h1>
+    <p>View your previous attempts and track your progress</p>
+  </div>
+
+  <div class="attempts-list">
+    <% if @attempts.any? %>
+      <% @attempts.each_with_index do |attempt, index| %>
+        <%
+          total_questions = attempt.quiz.questions.count
+          correct_answers = attempt.user_answers.where(is_correct: true).count
+          wrong_answers = attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
+          percentage = attempt.percentage_score
+          
+          performance_class = case percentage
+            when 80..100 then 'excellent'
+            when 60...80 then 'good'
+            when 40...60 then 'average'
+            else 'poor'
+          end
+          
+          performance_text = case percentage
+            when 80..100 then 'Excellent'
+            when 60...80 then 'Good'
+            when 40...60 then 'Average'
+            else 'Needs Improvement'
+          end
+        %>
+
+        <div class="attempt-card">
+          <div class="attempt-header">
+            <div>
+              <div class="attempt-number">Attempt #<%= @attempts.length - index %></div>
+              <div class="attempt-date">
+                <%= attempt.completed_at.strftime("%B %d, %Y at %I:%M %p") %>
+              </div>
+            </div>
+            <div class="performance-indicator performance-<%= performance_class %>">
+              <%= performance_text %>
+            </div>
+          </div>
+
+          <div class="attempt-stats">
+            <div class="stat-box">
+              <span class="stat-label">Score</span>
+              <span class="stat-value score"><%= percentage.round %>%</span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Correct</span>
+              <span class="stat-value correct"><%= correct_answers %>/<%= total_questions %></span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Wrong</span>
+              <span class="stat-value wrong"><%= wrong_answers %></span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Time Taken</span>
+              <span class="stat-value"><%= attempt.time_taken %> min</span>
+            </div>
+
+            <div class="stat-box">
+              <span class="stat-label">Marks</span>
+              <span class="stat-value"><%= attempt.score.to_f.round(1) %>/<%= attempt.quiz.questions.sum(:marks).to_f.round(1) %></span>
+            </div>
+          </div>
+
+          <div class="attempt-actions">
+            <%= link_to solutions_user_quiz_attempt_path(attempt), class: "btn btn-primary" do %>
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              View Solutions
+            <% end %>
+
+            <%= link_to result_user_quiz_attempt_path(attempt), class: "btn btn-secondary" do %>
+              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+              </svg>
+              View Results
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% else %>
+      <div class="empty-state">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <h3>No Attempts Yet</h3>
+        <p>You haven't attempted this quiz yet. Start your first attempt now!</p>
+        <%= link_to "Start Quiz", start_attempt_quiz_path(@quiz), method: :post, class: "btn btn-primary", data: { turbo: false } %>
+      </div>
+    <% end %>
+  </div>
+</div>
