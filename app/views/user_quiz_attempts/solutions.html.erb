@@ -1,6 +1,6 @@
 <style>
   .solutions-container {
-    max-width: 1000px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 2rem 1rem;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
@@ -29,89 +29,310 @@
     color: #cbd5e1;
   }
 
-  .solutions-header {
+  /* Overview Section */
+  .overview-section {
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 16px;
     padding: 2rem;
     margin-bottom: 2rem;
+  }
+
+  .overview-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #f1f5f9;
     flex-wrap: wrap;
-    gap: 1.5rem;
+    gap: 1rem;
   }
 
-  .header-content h1 {
+  .overview-title h1 {
     font-size: 1.75rem;
     font-weight: 700;
     color: #1a202c;
     margin: 0 0 0.5rem 0;
   }
 
-  .header-content p {
+  .overview-title p {
     color: #64748b;
     margin: 0;
   }
 
-  .score-badge {
+  .score-badge-large {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 1rem 2rem;
-    border-radius: 12px;
+    padding: 1.5rem 2.5rem;
+    border-radius: 16px;
     text-align: center;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
   }
 
-  .score-label {
+  .score-label-large {
     font-size: 0.875rem;
     opacity: 0.9;
-    margin-bottom: 0.25rem;
+    margin-bottom: 0.5rem;
   }
 
-  .score-value {
-    font-size: 2rem;
+  .score-value-large {
+    font-size: 3rem;
     font-weight: 700;
   }
 
-  .legend-bar {
+  .performance-badge {
+    display: inline-block;
+    padding: 0.5rem 1.25rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-top: 0.5rem;
+  }
+
+  .performance-excellent {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .performance-good {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .performance-average {
+    background: #fed7aa;
+    color: #92400e;
+  }
+
+  .performance-poor {
+    background: #fecaca;
+    color: #991b1b;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .stat-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+  }
+
+  .stat-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .stat-label {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+
+  .stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .stat-subtext {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+  }
+
+  .accuracy-bar {
+    margin-top: 1.5rem;
+  }
+
+  .accuracy-label {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: #475569;
+    font-weight: 600;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 12px;
+    background: #e2e8f0;
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 6px;
+    transition: width 1s ease;
+  }
+
+  /* Filter Section */
+  .filter-section {
     background: white;
     border: 1px solid #e2e8f0;
     border-radius: 12px;
-    padding: 1.25rem;
+    padding: 1.5rem;
     margin-bottom: 2rem;
     display: flex;
-    justify-content: center;
-    gap: 2rem;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .filter-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  .filter-buttons {
+    display: flex;
+    gap: 0.75rem;
     flex-wrap: wrap;
   }
 
-  .legend-item {
+  .filter-btn {
+    padding: 0.5rem 1.25rem;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 10px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: #64748b;
+  }
+
+  .filter-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+  }
+
+  .filter-btn.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+  }
+
+  .filter-btn.correct-filter {
+    border-color: #10b981;
+    color: #065f46;
+  }
+
+  .filter-btn.correct-filter.active {
+    background: #10b981;
+    color: white;
+  }
+
+  .filter-btn.wrong-filter {
+    border-color: #ef4444;
+    color: #991b1b;
+  }
+
+  .filter-btn.wrong-filter.active {
+    background: #ef4444;
+    color: white;
+  }
+
+  .filter-btn.skipped-filter {
+    border-color: #f59e0b;
+    color: #92400e;
+  }
+
+  .filter-btn.skipped-filter.active {
+    background: #f59e0b;
+    color: white;
+  }
+
+  /* Question Navigation */
+  .question-nav-section {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .nav-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin-bottom: 1rem;
+  }
+
+  .question-palette {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .palette-item {
+    aspect-ratio: 1;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    justify-content: center;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
     font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    color: #64748b;
   }
 
-  .legend-icon {
-    width: 20px;
-    height: 20px;
-    border-radius: 6px;
-    border: 2px solid;
+  .palette-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   }
 
-  .legend-icon.correct {
+  .palette-item.active {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+    transform: scale(1.1);
+  }
+
+  .palette-item.correct {
     background: #d1fae5;
     border-color: #10b981;
+    color: #065f46;
   }
 
-  .legend-icon.wrong {
+  .palette-item.wrong {
     background: #fee2e2;
     border-color: #ef4444;
+    color: #991b1b;
   }
 
-  .legend-icon.skipped {
+  .palette-item.skipped {
     background: #fef3c7;
     border-color: #f59e0b;
+    color: #92400e;
+  }
+
+  /* Solutions Section */
+  .solutions-wrapper {
+    position: relative;
   }
 
   .solution-card {
@@ -120,7 +341,13 @@
     border-radius: 16px;
     padding: 2rem;
     position: relative;
-    display: none; /* hide all by default */
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .solution-card.correct {
@@ -295,66 +522,85 @@
     margin: 0;
   }
 
-  .back-button {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 1rem 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-    transition: all 0.2s;
-    z-index: 100;
-  }
-
-  .back-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
-  }
-
   .nav-buttons {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    gap: 1.5rem;
     margin-top: 2rem;
+    gap: 1rem;
   }
 
   .nav-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
-    padding: 0.8rem 1.8rem;
+    padding: 0.875rem 2rem;
     border: none;
     border-radius: 12px;
     font-weight: 600;
     cursor: pointer;
     box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
     transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
   }
 
-  .nav-btn:hover {
+  .nav-btn:hover:not(:disabled) {
     transform: translateY(-2px);
     box-shadow: 0 8px 20px rgba(102, 126, 234, 0.5);
   }
 
+  .nav-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .nav-info {
+    font-size: 0.875rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    transition: all 0.2s;
+    margin-top: 2rem;
+  }
+
+  .back-link:hover {
+    border-color: #667eea;
+    background: #f8fafc;
+  }
+
   @media (max-width: 768px) {
-    .solutions-header {
+    .overview-header {
       flex-direction: column;
       align-items: stretch;
     }
 
-    .legend-bar {
-      gap: 1rem;
+    .stats-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
 
-    .back-button {
-      bottom: 1rem;
-      right: 1rem;
-      padding: 0.875rem 1.5rem;
-      font-size: 0.875rem;
+    .filter-section {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .filter-buttons {
+      justify-content: center;
+    }
+
+    .question-palette {
+      grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
     }
   }
 </style>
@@ -367,42 +613,133 @@
     <span>/</span>
     <%= link_to "My Attempts", my_attempts_quiz_path(@quiz) %>
     <span>/</span>
-    <span>Solutions</span>
+    <span>Review</span>
   </div>
 
   <%
+    total_questions = @questions.count
     correct_count = @attempt.user_answers.where(is_correct: true).count
     wrong_count = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
-    skipped_count = @questions.count - @attempt.user_answers.where.not(option_id: nil).count
+    skipped_count = total_questions - @attempt.user_answers.where.not(option_id: nil).count
+    percentage = @attempt.percentage_score
+    
+    performance_class = case percentage
+      when 80..100 then 'excellent'
+      when 60...80 then 'good'
+      when 40...60 then 'average'
+      else 'poor'
+    end
+    
+    performance_text = case percentage
+      when 80..100 then 'Excellent! 🎉'
+      when 60...80 then 'Good Job! 👍'
+      when 40...60 then 'Average 😊'
+      else 'Keep Practicing 💪'
+    end
   %>
 
-  <div class="solutions-header">
-    <div class="header-content">
-      <h1>Solutions & Explanations</h1>
-      <p><%= @quiz.title %> - Attempt on <%= @attempt.completed_at.strftime("%B %d, %Y") %></p>
+  <!-- OVERVIEW SECTION -->
+  <div class="overview-section">
+    <div class="overview-header">
+      <div class="overview-title">
+        <h1>Quiz Review - <%= @quiz.title %></h1>
+        <p>Attempted on <%= @attempt.completed_at.strftime("%B %d, %Y at %I:%M %p") %></p>
+      </div>
+      <div class="score-badge-large">
+        <div class="score-label-large">Your Score</div>
+        <div class="score-value-large"><%= percentage.round %>%</div>
+        <div class="performance-badge performance-<%= performance_class %>">
+          <%= performance_text %>
+        </div>
+      </div>
     </div>
-    <div class="score-badge">
-      <div class="score-label">Your Score</div>
-      <div class="score-value"><%= @attempt.percentage_score.round %>%</div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="stat-label">Correct Answers</div>
+        <div class="stat-value" style="color: #10b981;"><%= correct_count %></div>
+        <div class="stat-subtext">out of <%= total_questions %></div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </div>
+        <div class="stat-label">Wrong Answers</div>
+        <div class="stat-value" style="color: #ef4444;"><%= wrong_count %></div>
+        <div class="stat-subtext">need review</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <div class="stat-label">Time Taken</div>
+        <div class="stat-value"><%= @attempt.time_taken %></div>
+        <div class="stat-subtext">minutes</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">
+          <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+          </svg>
+        </div>
+        <div class="stat-label">Skipped</div>
+        <div class="stat-value" style="color: #f59e0b;"><%= skipped_count %></div>
+        <div class="stat-subtext">not attempted</div>
+      </div>
+    </div>
+
+    <div class="accuracy-bar">
+      <div class="accuracy-label">
+        <span>Accuracy Rate</span>
+        <span><%= percentage.round %>%</span>
+      </div>
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: <%= percentage %>%"></div>
+      </div>
     </div>
   </div>
 
-  <div class="legend-bar">
-    <div class="legend-item">
-      <div class="legend-icon correct"></div>
-      <span>Correct (<%= correct_count %>)</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-icon wrong"></div>
-      <span>Wrong (<%= wrong_count %>)</span>
-    </div>
-    <div class="legend-item">
-      <div class="legend-icon skipped"></div>
-      <span>Skipped (<%= skipped_count %>)</span>
+  <!-- FILTER SECTION -->
+  <div class="filter-section">
+    <div class="filter-title">Filter Questions:</div>
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">
+        All Questions (<%= total_questions %>)
+      </button>
+      <button class="filter-btn correct-filter" data-filter="correct">
+        Correct (<%= correct_count %>)
+      </button>
+      <button class="filter-btn wrong-filter" data-filter="wrong">
+        Wrong (<%= wrong_count %>)
+      </button>
+      <button class="filter-btn skipped-filter" data-filter="skipped">
+        Skipped (<%= skipped_count %>)
+      </button>
     </div>
   </div>
 
-  <div class="questions-list">
+  <!-- QUESTION PALETTE -->
+  <div class="question-nav-section">
+    <div class="nav-title">Quick Navigation</div>
+    <div class="question-palette" id="questionPalette">
+      <!-- Will be populated by JavaScript -->
+    </div>
+  </div>
+
+  <!-- SOLUTIONS -->
+  <div class="solutions-wrapper">
     <% @questions.each_with_index do |question, index| %>
       <% 
         user_answer = @user_answers[question.id]
@@ -435,9 +772,9 @@
         end
       %>
 
-      <div class="solution-card <%= card_class %>">
+      <div class="solution-card <%= card_class %>" data-question-index="<%= index %>" data-status="<%= card_class %>">
         <div class="question-header">
-          <span class="question-number">Question <%= index + 1 %> of <%= @questions.count %></span>
+          <span class="question-number">Question <%= index + 1 %> of <%= total_questions %></span>
           <span class="result-badge <%= card_class %>">
             <%= result_icon %> <%= result_text %>
           </span>
@@ -500,48 +837,161 @@
             <% end %>
           </p>
         </div>
+
+        <div class="nav-buttons">
+          <button id="prevBtn" class="nav-btn">
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+            </svg>
+            Previous
+          </button>
+          
+          <span class="nav-info">Question <%= index + 1 %> / <%= total_questions %></span>
+          
+          <button id="nextBtn" class="nav-btn">
+            Next
+            <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+            </svg>
+          </button>
+        </div>
       </div>
     <% end %>
   </div>
 
-  <div class="nav-buttons">
-    <button id="prevBtn" class="nav-btn">← Previous</button>
-    <button id="nextBtn" class="nav-btn">Next →</button>
-  </div>
-
-  <%= link_to my_attempts_quiz_path(@quiz), class: "back-button" do %>
-    ← Back to Attempts
+  <%= link_to my_attempts_quiz_path(@quiz), class: "back-link" do %>
+    <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+    </svg>
+    Back to My Attempts
   <% end %>
 </div>
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     const questions = document.querySelectorAll(".solution-card");
+    const palette = document.getElementById("questionPalette");
+    const filterButtons = document.querySelectorAll(".filter-btn");
     let currentIndex = 0;
+    let currentFilter = 'all';
+    let filteredIndices = [];
+
+    // Initialize palette
+    questions.forEach((q, i) => {
+      const status = q.dataset.status;
+      const paletteItem = document.createElement("div");
+      paletteItem.className = `palette-item ${status}`;
+      paletteItem.textContent = i + 1;
+      paletteItem.dataset.index = i;
+      paletteItem.addEventListener("click", () => goToQuestion(i));
+      palette.appendChild(paletteItem);
+    });
+
+    function updateFilteredIndices() {
+      filteredIndices = [];
+      questions.forEach((q, i) => {
+        const status = q.dataset.status;
+        if (currentFilter === 'all' || status === currentFilter) {
+          filteredIndices.push(i);
+        }
+      });
+    }
 
     function showQuestion(index) {
       questions.forEach((q, i) => {
         q.style.display = i === index ? "block" : "none";
       });
 
-      document.getElementById("prevBtn").style.display = index === 0 ? "none" : "inline-block";
-      document.getElementById("nextBtn").style.display = index === questions.length - 1 ? "none" : "inline-block";
+      // Update palette
+      const paletteItems = palette.querySelectorAll(".palette-item");
+      paletteItems.forEach((item, i) => {
+        item.classList.toggle("active", i === index);
+      });
+
+      // Update navigation buttons
+      const currentQuestion = questions[index];
+      const prevBtn = currentQuestion.querySelector("#prevBtn");
+      const nextBtn = currentQuestion.querySelector("#nextBtn");
+      
+      const currentFilteredIndex = filteredIndices.indexOf(index);
+      
+      if (prevBtn) {
+        prevBtn.disabled = currentFilteredIndex === 0;
+        prevBtn.style.opacity = currentFilteredIndex === 0 ? '0.5' : '1';
+      }
+      
+      if (nextBtn) {
+        nextBtn.disabled = currentFilteredIndex === filteredIndices.length - 1;
+        nextBtn.style.opacity = currentFilteredIndex === filteredIndices.length - 1 ? '0.5' : '1';
+      }
+
+      // Scroll to top
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    document.getElementById("nextBtn").addEventListener("click", () => {
-      if (currentIndex < questions.length - 1) {
-        currentIndex++;
+    function goToQuestion(index) {
+      currentIndex = index;
+      showQuestion(currentIndex);
+    }
+
+    function navigateNext() {
+      const currentFilteredIndex = filteredIndices.indexOf(currentIndex);
+      if (currentFilteredIndex < filteredIndices.length - 1) {
+        currentIndex = filteredIndices[currentFilteredIndex + 1];
         showQuestion(currentIndex);
+      }
+    }
+
+    function navigatePrev() {
+      const currentFilteredIndex = filteredIndices.indexOf(currentIndex);
+      if (currentFilteredIndex > 0) {
+        currentIndex = filteredIndices[currentFilteredIndex - 1];
+        showQuestion(currentIndex);
+      }
+    }
+
+    // Filter functionality
+    filterButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        filterButtons.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        
+        currentFilter = btn.dataset.filter;
+        updateFilteredIndices();
+        
+        // Show first question of filtered set
+        if (filteredIndices.length > 0) {
+          currentIndex = filteredIndices[0];
+          showQuestion(currentIndex);
+        }
+      });
+    });
+
+    // Navigation event listeners
+    questions.forEach(question => {
+      const prevBtn = question.querySelector("#prevBtn");
+      const nextBtn = question.querySelector("#nextBtn");
+      
+      if (prevBtn) {
+        prevBtn.addEventListener("click", navigatePrev);
+      }
+      
+      if (nextBtn) {
+        nextBtn.addEventListener("click", navigateNext);
       }
     });
 
-    document.getElementById("prevBtn").addEventListener("click", () => {
-      if (currentIndex > 0) {
-        currentIndex--;
-        showQuestion(currentIndex);
+    // Keyboard navigation
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") {
+        navigatePrev();
+      } else if (e.key === "ArrowRight") {
+        navigateNext();
       }
     });
 
+    // Initialize
+    updateFilteredIndices();
     showQuestion(currentIndex);
   });
 </script>
