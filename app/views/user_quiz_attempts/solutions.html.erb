@@ -772,7 +772,7 @@
         end
       %>
 
-      <div class="solution-card <%= card_class %>" data-question-index="<%= index %>" data-status="<%= card_class %>">
+      <div class="solution-card <%= card_class %>" data-question-index="<%= index %>" data-status="<%= card_class %>" id="myElement">
         <div class="question-header">
           <span class="question-number">Question <%= index + 1 %> of <%= total_questions %></span>
           <span class="result-badge <%= card_class %>">
@@ -925,8 +925,8 @@
         nextBtn.style.opacity = currentFilteredIndex === filteredIndices.length - 1 ? '0.5' : '1';
       }
 
-      // Scroll to top
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      // Scrolls 500px down from the top
+      window.scrollTo({ top: 950, behavior: 'smooth' });
     }
 
     function goToQuestion(index) {
