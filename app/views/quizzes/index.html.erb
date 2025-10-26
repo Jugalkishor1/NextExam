@@ -303,9 +303,23 @@
               <span class="meta-value"><%= quiz.questions.count %> Questions</span>
             </div>
 
-            <button class="start-btn" onclick="event.preventDefault(); window.location.href='<%= quiz_path(quiz) %>'">
-              Start Quiz
-            </button>
+            <% if attempt = quiz.quiz_attempt_for_user(current_user) %>
+              <% if attempt.completed? %>
+                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                  <button class="start-btn" style="background: linear-gradient(135deg, #34d399 0%, #059669 100%);" onclick="event.preventDefault(); window.location.href='<%= result_user_quiz_attempt_path(attempt) %>'">
+                    View Result
+                  </button>
+                </div>
+              <% else %>
+                <button class="start-btn" onclick="event.preventDefault(); window.location.href='<%= user_quiz_attempt_path(attempt) %>'">
+                  Continue Quiz
+                </button>
+              <% end %>
+            <% else %>
+              <button class="start-btn" onclick="event.preventDefault(); window.location.href='<%= quiz_path(quiz) %>'">
+                Start Quiz
+              </button>
+            <%end%>
           </div>
         <% end %>
       <% end %>

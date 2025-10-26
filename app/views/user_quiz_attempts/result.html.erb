@@ -1,0 +1,332 @@
+<style>
+  .result-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+  }
+
+  .result-hero {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    padding: 3rem 2.5rem;
+    text-align: center;
+    color: white;
+    margin-bottom: 2rem;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+  }
+
+  .result-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 1.5rem;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3rem;
+  }
+
+  .result-hero h1 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+  }
+
+  .result-subtitle {
+    font-size: 1.125rem;
+    opacity: 0.95;
+  }
+
+  .score-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .score-card {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+  }
+
+  .score-card-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+  }
+
+  .score-card-label {
+    font-size: 0.875rem;
+    color: #64748b;
+    margin-bottom: 0.5rem;
+  }
+
+  .score-card-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+  }
+
+  .score-card-subtext {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    margin-top: 0.25rem;
+  }
+
+  .performance-badge {
+    display: inline-block;
+    padding: 0.75rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.125rem;
+    margin: 1rem 0;
+  }
+
+  .performance-excellent {
+    background: #d1fae5;
+    color: #065f46;
+  }
+
+  .performance-good {
+    background: #dbeafe;
+    color: #1e40af;
+  }
+
+  .performance-average {
+    background: #fed7aa;
+    color: #92400e;
+  }
+
+  .performance-needs-improvement {
+    background: #fecaca;
+    color: #991b1b;
+  }
+
+  .detailed-analysis {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .analysis-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1a202c;
+    margin: 0 0 1.5rem 0;
+  }
+
+  .analysis-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f1f5f9;
+  }
+
+  .analysis-row:last-child {
+    border-bottom: none;
+  }
+
+  .analysis-label {
+    color: #64748b;
+    font-size: 0.875rem;
+  }
+
+  .analysis-value {
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 0.5rem;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+    border-radius: 4px;
+    transition: width 1s ease;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    padding: 0.875rem 2rem;
+    border-radius: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.2s;
+    border: 2px solid;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-color: #667eea;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+  }
+
+  .btn-secondary {
+    background: white;
+    border-color: #e2e8f0;
+    color: #475569;
+  }
+
+  .btn-secondary:hover {
+    border-color: #667eea;
+    color: #667eea;
+  }
+
+  @media (max-width: 640px) {
+    .score-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .action-buttons {
+      flex-direction: column;
+    }
+
+    .btn {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+<%
+  total_questions = @attempt.quiz.questions.count
+  correct_answers = @attempt.user_answers.where(is_correct: true).count
+  wrong_answers = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
+  unattempted = total_questions - @attempt.user_answers.where.not(option_id: nil).count
+  percentage = @attempt.percentage_score
+  
+  performance_class = case percentage
+    when 80..100 then 'excellent'
+    when 60...80 then 'good'
+    when 40...60 then 'average'
+    else 'needs-improvement'
+  end
+  
+  performance_text = case percentage
+    when 80..100 then 'Excellent! 🎉'
+    when 60...80 then 'Good Job! 👍'
+    when 40...60 then 'Average 😊'
+    else 'Keep Practicing 💪'
+  end
+%>
+
+<div class="result-container">
+  <div class="result-hero">
+    <div class="result-icon">
+      <%= percentage >= 60 ? '🎉' : '📚' %>
+    </div>
+    <h1>Quiz Completed!</h1>
+    <p class="result-subtitle"><%= @attempt.quiz.title %></p>
+    <div class="performance-badge performance-<%= performance_class %>">
+      <%= performance_text %>
+    </div>
+  </div>
+
+  <div class="score-cards">
+    <div class="score-card">
+      <div class="score-card-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="score-card-label">Score</div>
+      <div class="score-card-value"><%= percentage.round %>%</div>
+      <div class="score-card-subtext"><%= @attempt.score.to_f.round(1) %> / <%= @attempt.quiz.questions.sum(:marks).to_f.round(1) %> marks</div>
+    </div>
+
+    <div class="score-card">
+      <div class="score-card-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        </svg>
+      </div>
+      <div class="score-card-label">Correct Answers</div>
+      <div class="score-card-value"><%= correct_answers %></div>
+      <div class="score-card-subtext">out of <%= total_questions %></div>
+    </div>
+
+    <div class="score-card">
+      <div class="score-card-icon">
+        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="score-card-label">Time Taken</div>
+      <div class="score-card-value"><%= @attempt.time_taken %></div>
+      <div class="score-card-subtext">minutes</div>
+    </div>
+  </div>
+
+  <div class="detailed-analysis">
+    <h2 class="analysis-title">Detailed Analysis</h2>
+    
+    <div class="analysis-row">
+      <span class="analysis-label">Total Questions</span>
+      <span class="analysis-value"><%= total_questions %></span>
+    </div>
+
+    <div class="analysis-row">
+      <span class="analysis-label">Correct Answers</span>
+      <span class="analysis-value" style="color: #10b981;"><%= correct_answers %></span>
+    </div>
+
+    <div class="analysis-row">
+      <span class="analysis-label">Wrong Answers</span>
+      <span class="analysis-value" style="color: #ef4444;"><%= wrong_answers %></span>
+    </div>
+
+    <div class="analysis-row">
+      <span class="analysis-label">Unattempted</span>
+      <span class="analysis-value" style="color: #f59e0b;"><%= unattempted %></span>
+    </div>
+
+    <div class="analysis-row">
+      <div style="flex: 1;">
+        <span class="analysis-label">Accuracy Rate</span>
+        <div class="progress-bar">
+          <div class="progress-fill" style="width: <%= percentage %>%"></div>
+        </div>
+      </div>
+      <span class="analysis-value"><%= percentage.round %>%</span>
+    </div>
+  </div>
+
+  <div class="action-buttons">
+    <%= link_to "View Solutions", "#", class: "btn btn-primary" %>
+    <%= button_to "Try Again", start_attempt_quiz_path(@attempt.quiz), method: :post, class: "btn btn-secondary", data: { turbo: false } %>
+    <%= link_to "Back to Quizzes", quizzes_path, class: "btn btn-secondary" %>
+  </div>
+</div>

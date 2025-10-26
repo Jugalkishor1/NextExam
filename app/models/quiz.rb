@@ -24,4 +24,8 @@ class Quiz < ApplicationRecord
   def self.ransackable_associations(auth_object = nil)
     ["questions", "subject"]
   end
+
+  def quiz_attempt_for_user(user)
+    user.user_quiz_attempts.find_by(quiz_id: self.id)
+  end
 end

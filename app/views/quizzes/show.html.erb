@@ -367,7 +367,40 @@
       <div class="action-section">
         <h2 class="action-title">Ready to begin?</h2>
         <p class="action-description">You'll have <%= @quiz.time_limit %> minutes to complete all <%= @quiz.questions.count %> questions</p>
-        <%= link_to "Start Quiz Now", "#", class: "start-quiz-btn" %>
+
+        <% if attempt = @quiz.quiz_attempt_for_user(current_user) %>
+          <% if attempt.completed? %>
+            <div style="display: flex; justify-content: space-evenly;">
+              <%= button_to "Reattempt", start_attempt_quiz_path(@quiz), 
+              method: :post, 
+              class: "start-quiz-btn",
+              data: { 
+                turbo: false,
+                confirm: "Are you ready to start the quiz? Timer will begin immediately." 
+              } %>
+
+              <button class="start-quiz-btn" style="background: linear-gradient(135deg, #34d399 0%, #059669 100%);" onclick="event.preventDefault(); window.location.href='<%= result_user_quiz_attempt_path(attempt) %>'">
+                      View Result
+                    </button>
+            </div>
+          <% else %>
+            <%= button_to "Continue", user_quiz_attempt_path(@quiz), 
+              method: :post, 
+              class: "start-quiz-btn",
+              data: { 
+                turbo: false,
+                confirm: "Are you ready to start the quiz? Timer will begin immediately." 
+              } %>
+          <% end %>
+        <% else %>
+          <%= button_to "Start Quiz Now", start_attempt_quiz_path(@quiz), 
+          method: :post, 
+          class: "start-quiz-btn",
+          data: { 
+            turbo: false,
+            confirm: "Are you ready to start the quiz? Timer will begin immediately." 
+          } %>
+        <% end %>
       </div>
     </div>
   </div>
