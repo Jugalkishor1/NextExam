@@ -7,6 +7,14 @@ class UserQuizAttempt < ApplicationRecord
   
   validates :started_at, presence: true
   
+  def self.ransackable_associations(auth_object = nil)
+    ["quiz", "user", "user_answers"]
+  end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["completed_at", "created_at", "id", "id_value", "quiz_id", "score", "started_at", "status", "time_taken", "updated_at", "user_id"]
+  end
+  
   def time_remaining
     return 0 if completed?
     

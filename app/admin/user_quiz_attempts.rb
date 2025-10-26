@@ -30,6 +30,7 @@ ActiveAdmin.register UserQuizAttempt do
       row :quiz
       row :score
       row :time_taken do |attempt|
+        debugger
         "#{attempt.time_taken} seconds (#{attempt.time_taken / 60} minutes)" if attempt.time_taken
       end
       row :status
@@ -47,7 +48,7 @@ ActiveAdmin.register UserQuizAttempt do
           answer.option&.content
         end
         column :is_correct do |answer|
-          status_tag(answer.is_correct ? "Correct" : "Incorrect", answer.is_correct ? :yes : :no)
+          status_tag(answer.is_correct ? "Correct" : "Incorrect")
         end
         column :marks do |answer|
           answer.is_correct ? answer.question.marks : 0
