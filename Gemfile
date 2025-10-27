@@ -69,5 +69,5 @@ end
 gem 'activeadmin'
 gem 'sass-rails'
 
-# Plus integrations with:
 gem 'devise'
+gem 'arctic_admin'
