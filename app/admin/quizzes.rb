@@ -30,8 +30,7 @@ ActiveAdmin.register Quiz do
       f.input :description, as: :text
       f.input :subject, as: :select, collection: Subject.all.order(:name)
       f.input :difficulty, as: :select, collection: Quiz.difficulties.keys
-      f.input :time_limit, label: "Time Limit (minutes)"
-      f.input :status, as: :select, collection: Quiz.statuses.keys
+      f.input :time_limit, label: "Time Limit (minutes)", input_html: { value: f.object.time_limit || 10 }
     end
     f.actions
   end

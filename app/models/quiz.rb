@@ -1,6 +1,6 @@
 class Quiz < ApplicationRecord
   enum difficulty: { easy: 0, medium: 1, hard: 2 }
-  enum status: { draft: 0, published: 1, archived: 2 }
+  enum status: { published: 0, archived: 2 }
   
   belongs_to :subject
   has_many :questions, dependent: :destroy
