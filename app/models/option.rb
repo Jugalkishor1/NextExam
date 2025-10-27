@@ -3,8 +3,7 @@ class Option < ApplicationRecord
   has_many :user_answers, dependent: :destroy
   
   validates :content, presence: true
-  validates :question_id, presence: true
-  
+    
   def to_s
     content
   end

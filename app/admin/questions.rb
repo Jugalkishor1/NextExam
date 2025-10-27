@@ -38,9 +38,11 @@ ActiveAdmin.register Question do
       f.input :exam, as: :select, collection: Exam.all.order(:name), include_blank: true
     end
 
+    f.object.options.build if f.object.options.empty?
+
     f.inputs 'Options' do
       f.has_many :options, allow_destroy: true, new_record: true do |o|
-        o.input :content
+        o.input :content, as: :text, input_html: { style: 'width: 70%; height: 40px;' }
         o.input :is_correct, as: :boolean
       end
     end
