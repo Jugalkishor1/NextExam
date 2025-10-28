@@ -71,3 +71,4 @@ gem 'sass-rails'
 
 gem 'devise'
 gem 'arctic_admin'
+gem "tailwindcss-rails", "~> 3.3.1"
