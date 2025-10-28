@@ -26,7 +26,8 @@
         </button>
       </div>
 
-      <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+      <button data-controller="toggle" data-action="click->toggle#toggleTheme" id="theme-toggle"
+        class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
         <i class="fas fa-moon dark:hidden text-gray-700"></i>
         <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
       </button>

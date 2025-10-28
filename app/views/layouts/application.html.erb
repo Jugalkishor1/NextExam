@@ -14,29 +14,5 @@
     <%= render "shared/header" %>
     <%= yield %>
     <%= render "shared/footer" %>
-    
-    <script>
-      // Dark mode toggle
-      const themeToggle = document.getElementById('theme-toggle');
-      const mobileThemeToggle = document.getElementById('mobile-theme-toggle');
-      const html = document.documentElement;
-
-      function toggleTheme() {
-        html.classList.toggle('dark');
-        localStorage.theme = html.classList.contains('dark') ? 'dark' : 'light';
-      }
-
-      themeToggle.addEventListener('click', toggleTheme);
-      mobileThemeToggle.addEventListener('click', toggleTheme);
-
-      if (localStorage.theme === 'dark') html.classList.add('dark');
-
-      // Mobile menu
-      const menuBtn = document.getElementById('menu-btn');
-      const mobileMenu = document.getElementById('mobile-menu');
-      menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-      });
-    </script>
   </body>
 </html>
