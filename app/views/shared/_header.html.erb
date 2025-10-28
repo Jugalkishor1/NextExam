@@ -1,39 +1,69 @@
 <!-- Header -->
-<header>
-    <div class="container">
-      <nav>
-        <a href="<%= root_path %>" class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            NextExam
-        </a>
-
-        <ul class="nav-links">
-            <li><a href="/">Home</a></li>
-            <li><a href="<%= exams_path %>">Exams</a></li>
-            <li><a href="#">Test Series</a></li>
-            <li><a href="/quizzes">Quiz</a></li>
-            <li><a href="#">PYQ</a></li>
-        </ul>
-
-        <div class="search-bar">
-            <input type="text" placeholder="Search exams, materials...">
-            <button><i class="fas fa-search"></i></button>
-        </div>
-
-        <div class="nav-actions">
-          <% if user_signed_in? %>
-            <button class="theme-toggle" onclick="toggleTheme()">
-              <i class="fas fa-moon" id="theme-icon"></i>
-            </button>
-            <%= link_to 'Logout', destroy_user_session_path, class: 'btn btn-outline', data: { turbo_method: :delete } %>
-          <% else %>
-            <button class="theme-toggle" onclick="toggleTheme()">
-              <i class="fas fa-moon" id="theme-icon"></i>
-            </button>
-            <%= link_to 'Login', new_user_session_path, class: 'btn btn-outline' %>
-            <%= link_to 'Register', new_user_registration_path, class: 'btn btn-primary' %>
-          <% end %>
-        </div>
-      </nav>
+<header class="border-b border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 sticky top-0 z-50 backdrop-blur-lg bg-opacity-90 dark:bg-opacity-90">
+  <nav class="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-3">
+    
+    <!-- Logo -->
+    <div class="flex items-center space-x-2">
+      <span class="text-2xl sm:text-3xl">🎓</span>
+      <span class="text-xl sm:text-2xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-400 dark:to-pink-400 bg-clip-text text-transparent">
+        Next<span>Exam</span>
+      </span>
     </div>
+
+    <!-- Desktop Links -->
+    <ul class="hidden lg:flex space-x-6 text-base font-semibold">
+      <li><a href="#" class="text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors">Home</a></li>
+      <li><a href="#" class="text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors">Exams</a></li>
+      <li><a href="#" class="text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors">Test Series</a></li>
+      <li><a href="#" class="text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors">Quiz</a></li>
+      <li><a href="#" class="text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 transition-colors">PYQ</a></li>
+    </ul>
+
+    <!-- Search + Theme + Button -->
+    <div class="hidden lg:flex items-center space-x-3">
+      <!-- Search -->
+      <div class="relative">
+        <input type="text" placeholder="Search..." 
+                class="rounded-full border border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-800 py-2 px-4 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 dark:text-gray-100 w-48 xl:w-64 transition-all">
+        <button class="absolute right-3 top-2.5 text-purple-600 dark:text-purple-400">
+          <i class="fas fa-search text-sm"></i>
+        </button>
+      </div>
+
+      <!-- Theme toggle -->
+      <button id="theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+        <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+      </button>
+
+      <!-- Logout -->
+      <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold px-5 py-2 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105">
+        Logout
+      </button>
+    </div>
+
+    <!-- Mobile menu button -->
+    <button id="menu-btn" class="lg:hidden text-2xl text-gray-700 dark:text-gray-200 focus:outline-none">
+      <i class="fas fa-bars"></i>
+    </button>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobile-menu" class="hidden lg:hidden px-4 sm:px-6 pb-4 space-y-3 bg-white dark:bg-gray-900">
+    <a href="#" class="block py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 font-medium transition-colors">Home</a>
+    <a href="#" class="block py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 font-medium transition-colors">Exams</a>
+    <a href="#" class="block py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 font-medium transition-colors">Test Series</a>
+    <a href="#" class="block py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 font-medium transition-colors">Quiz</a>
+    <a href="#" class="block py-2 text-gray-700 hover:text-purple-600 dark:text-gray-200 dark:hover:text-purple-400 font-medium transition-colors">PYQ</a>
+
+    <div class="flex items-center justify-between pt-3 border-t border-gray-200 dark:border-gray-700">
+      <button id="mobile-theme-toggle" class="p-2 rounded-full bg-gray-100 dark:bg-gray-800">
+        <i class="fas fa-moon dark:hidden text-gray-700"></i>
+        <i class="fas fa-sun hidden dark:inline text-yellow-400"></i>
+      </button>
+      <button class="bg-gradient-to-r from-purple-600 to-pink-600 text-white font-semibold px-5 py-2 rounded-lg">
+        Logout
+      </button>
+    </div>
+  </div>
 </header>
