@@ -1,0 +1,47 @@
+<!-- Quick Access Section -->
+<section class="py-12 sm:py-16 md:py-24 bg-white dark:bg-gray-800">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-10 sm:mb-12">
+      <h2 class="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Quick Access</h2>
+      <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400">Everything you need in one place</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <%= link_to "#", class: "group" do %>
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 dark:from-indigo-600 dark:to-purple-700 rounded-2xl p-6 sm:p-8 text-white hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-clipboard-list text-3xl sm:text-4xl mb-4 opacity-90"></i>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3">Test Series</h3>
+          <p class="text-white/90 mb-6 text-sm sm:text-base">Practice with full-length mock tests designed by experts</p>
+          <div class="inline-flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all">
+            Start Practicing 
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      <% end %>
+
+      <%= link_to "#", class: "group" do %>
+        <div class="bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-2xl p-6 sm:p-8 text-white hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-file-alt text-3xl sm:text-4xl mb-4 opacity-90"></i>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3">Previous Year Papers</h3>
+          <p class="text-white/90 mb-6 text-sm sm:text-base">Solve past exam papers to understand patterns</p>
+          <div class="inline-flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all">
+            Browse PYQs
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      <% end %>
+
+      <%= link_to quizzes_path, class: "group" do %>
+        <div class="bg-gradient-to-br from-green-500 to-emerald-600 dark:from-green-600 dark:to-emerald-700 rounded-2xl p-6 sm:p-8 text-white hover:shadow-2xl transition-all duration-300 transform hover:scale-105">
+          <i class="fas fa-brain text-3xl sm:text-4xl mb-4 opacity-90"></i>
+          <h3 class="text-xl sm:text-2xl font-bold mb-3">Daily Quiz</h3>
+          <p class="text-white/90 mb-6 text-sm sm:text-base">Test your knowledge with daily quizzes</p>
+          <div class="inline-flex items-center gap-2 text-sm font-semibold group-hover:gap-3 transition-all">
+            Take Quiz
+            <i class="fas fa-arrow-right"></i>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</section>

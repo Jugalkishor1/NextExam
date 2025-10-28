@@ -1,287 +1,81 @@
-<style>
-  .exam-show-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  }
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 font-sans">
 
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    margin-bottom: 1.5rem;
-    font-size: 0.875rem;
-    color: #64748b;
-  }
+  <nav class="flex items-center gap-2 text-sm text-gray-600 dark:text-gray-400 mb-6">
+    <%= link_to "Exams", exams_path, class: "text-indigo-600 dark:text-indigo-400 hover:underline" %>
+    <span>/</span>
+    <span class="text-gray-500 dark:text-gray-500"><%= @exam.name %></span>
+  </nav>
 
-  .breadcrumb a {
-    color: #3b82f6;
-    text-decoration: none;
-  }
-
-  .breadcrumb a:hover {
-    text-decoration: underline;
-  }
-
-  .breadcrumb span {
-    color: #cbd5e1;
-  }
-
-  .exam-header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 16px;
-    padding: 2.5rem;
-    color: white;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
-  }
-
-  .exam-type-tag {
-    display: inline-block;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    margin-bottom: 1rem;
-    backdrop-filter: blur(10px);
-  }
-
-  .exam-header h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 0 0.75rem 0;
-  }
-
-  .exam-header p {
-    font-size: 1.125rem;
-    opacity: 0.95;
-    margin: 0;
-    line-height: 1.6;
-  }
-
-  .practice-options {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .option-card {
-    background: white;
-    border: 2px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
-    transition: all 0.3s ease;
-    cursor: pointer;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .option-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 4px;
-    height: 100%;
-    background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-    transform: scaleY(0);
-    transition: transform 0.3s ease;
-  }
-
-  .option-card:hover {
-    border-color: #667eea;
-    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.15);
-    transform: translateY(-4px);
-  }
-
-  .option-card:hover::before {
-    transform: scaleY(1);
-  }
-
-  .option-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.25rem;
-    color: white;
-    font-size: 1.5rem;
-  }
-
-  .option-card h3 {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .option-card p {
-    color: #64748b;
-    font-size: 0.875rem;
-    line-height: 1.6;
-    margin: 0 0 1rem 0;
-  }
-
-  .option-meta {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    font-size: 0.875rem;
-    color: #94a3b8;
-  }
-
-  .option-meta span {
-    display: flex;
-    align-items: center;
-    gap: 0.375rem;
-  }
-
-  .exam-info {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 2rem;
-  }
-
-  .exam-info h2 {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 1.5rem 0;
-  }
-
-  .info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .info-label {
-    font-size: 0.875rem;
-    color: #64748b;
-    font-weight: 500;
-  }
-
-  .info-value {
-    font-size: 1.125rem;
-    color: #1a202c;
-    font-weight: 600;
-  }
-
-  @media (max-width: 768px) {
-    .exam-header h1 {
-      font-size: 1.75rem;
-    }
-
-    .practice-options {
-      grid-template-columns: 1fr;
-    }
-  }
-</style>
-
-<div class="exam-show-container">
-  <div class="breadcrumb">
-    <%= link_to "Exams", exams_path %> <span>/</span> <span><%= @exam.name %></span>
+  <div class="rounded-2xl p-8 sm:p-10 mb-10 text-white bg-gradient-to-r from-indigo-500 to-purple-600 shadow-lg">
+    <span class="inline-block bg-white/20 text-white text-xs font-semibold px-3 py-1 rounded-full mb-4 uppercase tracking-wide backdrop-blur-sm">
+      <%= @exam.exam_type %>
+    </span>
+    <h1 class="text-3xl sm:text-4xl font-bold mb-3"><%= @exam.name %></h1>
+    <p class="text-sm sm:text-base opacity-90 leading-relaxed max-w-3xl"><%= @exam.description %></p>
   </div>
 
-  <div class="exam-header">
-    <span class="exam-type-tag"><%= @exam.exam_type %></span>
-    <h1><%= @exam.name %></h1>
-    <p><%= @exam.description %></p>
-  </div>
-
-  <div class="practice-options">
-    <%= link_to "#", class: "option-card" do %>
-      <div class="option-icon">📝</div>
-      <h3>Practice Quizzes</h3>
-      <p>Test your knowledge with topic-wise quizzes and get instant feedback on your performance</p>
-      <div class="option-meta">
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          15-30 mins
-        </span>
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          Topic-wise
-        </span>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+    
+    <%= link_to "#", class: "group relative block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" do %>
+      <div class="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-top"></div>
+      <div class="relative">
+        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl mb-4">
+          📝
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Practice Quizzes</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Test your knowledge with topic-wise quizzes and get instant feedback.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+          <span class="flex items-center gap-1"><i class="fas fa-clock"></i> 15–30 mins</span>
+          <span class="flex items-center gap-1"><i class="fas fa-bullseye"></i> Topic-wise</span>
+        </div>
       </div>
     <% end %>
 
-    <%= link_to "#", class: "option-card" do %>
-      <div class="option-icon">🎯</div>
-      <h3>Mock Tests</h3>
-      <p>Take full-length mock tests that simulate the actual exam environment and pattern</p>
-      <div class="option-meta">
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          60-120 mins
-        </span>
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
-          </svg>
-          Full exam
-        </span>
+    <%= link_to "#", class: "group relative block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" do %>
+      <div class="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-top"></div>
+      <div class="relative">
+        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl mb-4">
+          🎯
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Mock Tests</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Take full-length mock tests simulating real exam conditions.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+          <span class="flex items-center gap-1"><i class="fas fa-clock"></i> 60–120 mins</span>
+          <span class="flex items-center gap-1"><i class="fas fa-list-alt"></i> Full Exam</span>
+        </div>
       </div>
     <% end %>
 
-    <%= link_to "#", class: "option-card" do %>
-      <div class="option-icon">📚</div>
-      <h3>Previous Year Papers</h3>
-      <p>Practice with actual question papers from previous years to understand exam patterns</p>
-      <div class="option-meta">
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          60-90 mins
-        </span>
-        <span>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-          </svg>
-          Year-wise
-        </span>
+    <%= link_to "#", class: "group relative block bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden" do %>
+      <div class="absolute left-0 top-0 w-1 h-full bg-gradient-to-b from-indigo-500 to-purple-500 transform scale-y-0 group-hover:scale-y-100 transition-transform origin-top"></div>
+      <div class="relative">
+        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center text-white text-xl mb-4">
+          📚
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">Previous Year Papers</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Practice with actual papers from previous years.</p>
+        <div class="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+          <span class="flex items-center gap-1"><i class="fas fa-clock"></i> 60–90 mins</span>
+          <span class="flex items-center gap-1"><i class="fas fa-calendar-alt"></i> Year-wise</span>
+        </div>
       </div>
     <% end %>
   </div>
 
-  <div class="exam-info">
-    <h2>About this Exam</h2>
-    <div class="info-grid">
-      <div class="info-item">
-        <span class="info-label">Exam Type</span>
-        <span class="info-value"><%= @exam.exam_type %></span>
+  <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-2xl p-6 shadow-sm">
+    <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">About this Exam</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Exam Type</p>
+        <p class="text-base font-semibold text-gray-900 dark:text-gray-100"><%= @exam.exam_type %></p>
       </div>
-      <div class="info-item">
-        <span class="info-label">Status</span>
-        <span class="info-value"><%= @exam.status.capitalize %></span>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Status</p>
+        <p class="text-base font-semibold text-gray-900 dark:text-gray-100"><%= @exam.status.capitalize %></p>
       </div>
-      <div class="info-item">
-        <span class="info-label">Last Updated</span>
-        <span class="info-value"><%= @exam.updated_at.strftime("%b %d, %Y") %></span>
+      <div>
+        <p class="text-sm text-gray-500 dark:text-gray-400 font-medium">Last Updated</p>
+        <p class="text-base font-semibold text-gray-900 dark:text-gray-100"><%= @exam.updated_at.strftime("%b %d, %Y") %></p>
       </div>
     </div>
   </div>

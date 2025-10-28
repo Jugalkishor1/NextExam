@@ -1,334 +1,101 @@
-<style>
-  .quizzes-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  }
-
-  .page-header {
-    margin-bottom: 2rem;
-  }
-
-  .page-header h1 {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .page-header p {
-    color: #64748b;
-    font-size: 1rem;
-  }
-
-  .filters-section {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-  }
-
-  .filter-group {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .filter-label {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #475569;
-  }
-
-  .filter-buttons {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-  }
-
-  .filter-btn {
-    padding: 0.5rem 1rem;
-    border: 1px solid #e2e8f0;
-    background: white;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    cursor: pointer;
-    transition: all 0.2s;
-    color: #64748b;
-  }
-
-  .filter-btn:hover,
-  .filter-btn.active {
-    background: #667eea;
-    color: white;
-    border-color: #667eea;
-  }
-
-  .quizzes-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .quiz-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 1.5rem;
-    transition: all 0.3s ease;
-    text-decoration: none;
-    color: inherit;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .quiz-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-    transform: scaleX(0);
-    transition: transform 0.3s ease;
-  }
-
-  .quiz-card:hover {
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
-    transform: translateY(-4px);
-    border-color: #667eea;
-  }
-
-  .quiz-card:hover::before {
-    transform: scaleX(1);
-  }
-
-  .quiz-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 1rem;
-  }
-
-  .difficulty-badge {
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-  }
-
-  .difficulty-easy {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .difficulty-medium {
-    background: #fed7aa;
-    color: #92400e;
-  }
-
-  .difficulty-hard {
-    background: #fecaca;
-    color: #991b1b;
-  }
-
-  .quiz-card h3 {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 0.5rem 0;
-    line-height: 1.4;
-  }
-
-  .subject-tag {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.375rem;
-    font-size: 0.875rem;
-    color: #667eea;
-    font-weight: 500;
-    margin-bottom: 0.75rem;
-  }
-
-  .subject-tag::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    background: #667eea;
-    border-radius: 50%;
-  }
-
-  .quiz-description {
-    color: #64748b;
-    font-size: 0.875rem;
-    line-height: 1.6;
-    margin: 0 0 1.25rem 0;
-    flex-grow: 1;
-  }
-
-  .quiz-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-top: 1rem;
-    border-top: 1px solid #f1f5f9;
-  }
-
-  .meta-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: #64748b;
-  }
-
-  .meta-item svg {
-    width: 16px;
-    height: 16px;
-  }
-
-  .meta-value {
-    font-weight: 600;
-    color: #475569;
-  }
-
-  .start-btn {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .start-btn:hover {
-    transform: scale(1.05);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    color: #64748b;
-    grid-column: 1 / -1;
-  }
-
-  .empty-state svg {
-    width: 64px;
-    height: 64px;
-    margin: 0 auto 1rem;
-    opacity: 0.5;
-  }
-
-  @media (max-width: 640px) {
-    .quizzes-grid {
-      grid-template-columns: 1fr;
-    }
-
-    .filters-section {
-      flex-direction: column;
-      align-items: stretch;
-    }
-  }
-</style>
-
-<div class="quizzes-container">
-  <div class="page-header">
-    <h1>Practice Quizzes</h1>
-    <p>Sharpen your skills with subject-wise practice quizzes</p>
+<!-- Quizzes Page -->
+<div class="max-w-6xl mx-auto px-4 py-10 font-sans transition-colors duration-300 bg-gray-50 dark:bg-gray-900">
+  <div class="mb-8">
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-white mb-2">Practice Quizzes</h1>
+    <p class="text-gray-600 dark:text-gray-400">Sharpen your skills with subject-wise practice quizzes</p>
   </div>
 
-  <div class="filters-section">
-    <div class="filter-group">
-      <span class="filter-label">Difficulty</span>
-      <div class="filter-buttons">
-        <button class="filter-btn active">All</button>
-        <button class="filter-btn">Easy</button>
-        <button class="filter-btn">Medium</button>
-        <button class="filter-btn">Hard</button>
+  <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 mb-10 flex flex-wrap gap-6 items-center">
+    
+    <div class="flex flex-col gap-2">
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Difficulty</span>
+      <div class="flex flex-wrap gap-2">
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-indigo-600 text-white font-medium">All</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">Easy</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">Medium</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">Hard</button>
       </div>
     </div>
 
-    <div class="filter-group">
-      <span class="filter-label">Subject</span>
-      <div class="filter-buttons">
-        <button class="filter-btn active">All</button>
-        <button class="filter-btn">Maths</button>
-        <button class="filter-btn">English</button>
-        <button class="filter-btn">Reasoning</button>
-        <button class="filter-btn">GK</button>
+    <div class="flex flex-col gap-2">
+      <span class="text-sm font-semibold text-gray-700 dark:text-gray-300">Subject</span>
+      <div class="flex flex-wrap gap-2">
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-indigo-600 text-white font-medium">All</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">Maths</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">English</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">Reasoning</button>
+        <button class="px-4 py-2 text-sm border rounded-md transition-all border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-indigo-600 hover:text-white text-gray-600 dark:text-gray-400">GK</button>
       </div>
     </div>
   </div>
 
-  <div class="quizzes-grid">
+  <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+
     <% if @quizzes.any? %>
       <% @quizzes.each do |quiz| %>
-        <%= link_to quiz_path(quiz), class: "quiz-card" do %>
-          <div class="quiz-header">
-            <span class="difficulty-badge difficulty-<%= quiz.difficulty %>">
+        <%= link_to quiz_path(quiz), class: "group bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl p-6 flex flex-col transition-all duration-300 hover:-translate-y-1 hover:shadow-lg relative overflow-hidden" do %>
+
+          <div class="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-indigo-500 to-purple-600 scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300"></div>
+
+          <div class="flex justify-between items-start mb-3">
+            <span class="px-3 py-1 rounded-full text-xs font-semibold uppercase 
+              <%= case quiz.difficulty
+                when 'easy' then 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100'
+                when 'medium' then 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100'
+                else 'bg-rose-100 text-rose-800 dark:bg-rose-900 dark:text-rose-100'
+              end %>">
               <%= quiz.difficulty %>
             </span>
           </div>
 
-          <span class="subject-tag"><%= quiz.subject.name %></span>
-          <h3><%= quiz.title %></h3>
-          <p class="quiz-description"><%= quiz.description %></p>
+          <span class="inline-flex items-center gap-1 text-indigo-600 dark:text-indigo-400 font-medium text-sm mb-2">
+            <span class="w-1.5 h-1.5 bg-indigo-600 dark:bg-indigo-400 rounded-full"></span>
+            <%= quiz.subject.name %>
+          </span>
 
-          <div class="quiz-meta">
-            <div class="meta-item">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span class="meta-value"><%= quiz.time_limit %> mins</span>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2"><%= quiz.title %></h3>
+          <p class="text-sm text-gray-600 dark:text-gray-400 flex-grow mb-4"><%= quiz.description %></p>
+
+          <div class="border-t border-gray-100 dark:border-gray-700 pt-3 flex justify-between items-center">
+            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <i class="fas fa-clock"></i>
+              <span class="font-medium text-gray-700 dark:text-gray-300"><%= quiz.time_limit %> mins</span>
             </div>
-
-            <div class="meta-item">
-              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span class="meta-value"><%= quiz.questions.count %> Questions</span>
+            <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+              <i class="fas fa-question-circle"></i>
+              <span class="font-medium text-gray-700 dark:text-gray-300"><%= quiz.questions.count %> Qs</span>
             </div>
+          </div>
 
+          <div class="mt-4">
             <% if attempt = quiz.quiz_attempt_for_user(current_user) %>
               <% if attempt.completed? %>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
-                  <button class="start-btn" style="background: linear-gradient(135deg, #34d399 0%, #059669 100%);" onclick="event.preventDefault(); window.location.href='<%= solutions_user_quiz_attempt_path(attempt) %>'">
-                    View Result
-                  </button>
-                </div>
+                <button onclick="event.preventDefault(); window.location.href='<%= solutions_user_quiz_attempt_path(attempt) %>'"
+                  class="w-full py-2 rounded-lg bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white font-semibold text-sm transition-transform transform hover:scale-105">
+                  View Result
+                </button>
               <% else %>
-                <button class="start-btn" onclick="event.preventDefault(); window.location.href='<%= user_quiz_attempt_path(attempt) %>'">
+                <button onclick="event.preventDefault(); window.location.href='<%= user_quiz_attempt_path(attempt) %>'"
+                  class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold text-sm transition-transform transform hover:scale-105">
                   Continue Quiz
                 </button>
               <% end %>
             <% else %>
-              <button class="start-btn" onclick="event.preventDefault(); window.location.href='<%= quiz_path(quiz) %>'">
+              <button onclick="event.preventDefault(); window.location.href='<%= quiz_path(quiz) %>'"
+                class="w-full py-2 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-semibold text-sm transition-transform transform hover:scale-105">
                 Start Quiz
               </button>
-            <%end%>
+            <% end %>
           </div>
         <% end %>
       <% end %>
+
     <% else %>
-      <div class="empty-state">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+      <div class="col-span-full text-center py-16 text-gray-600 dark:text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
         </svg>
-        <h3>No quizzes available</h3>
+        <h3 class="text-lg font-semibold mb-1">No quizzes available</h3>
         <p>Check back later for new practice quizzes</p>
       </div>
     <% end %>

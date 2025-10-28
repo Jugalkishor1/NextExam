@@ -1,0 +1,80 @@
+<!-- Popular Exams Section - Redesigned -->
+<section class="py-12 sm:py-16 md:py-24 bg-gray-50 dark:bg-gray-900">
+  <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+   <div class="text-center mb-10 sm:mb-16">
+      <div class="inline-block mb-4">
+        <span class="bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 px-4 py-2 rounded-full text-xs sm:text-sm font-semibold">
+          🎯 POPULAR CHOICES
+        </span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+        Choose Your <span class="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">Dream Exam</span>
+      </h2>
+      <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Join thousands of successful candidates who achieved their goals with us
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
+      <% @exams.each_with_index do |exam, index| %>
+        <%= link_to exam_path(exam), class: "group" do %>
+          <div class="relative bg-white dark:bg-gray-800 rounded-2xl p-6 border-2 border-gray-200 dark:border-gray-700 hover:border-purple-500 dark:hover:border-purple-500 hover:shadow-2xl dark:hover:shadow-purple-500/20 transition-all duration-300 transform hover:-translate-y-2 overflow-hidden">
+            <!-- Animated Background Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-br from-purple-500/0 to-pink-500/0 group-hover:from-purple-500/5 group-hover:to-pink-500/5 dark:group-hover:from-purple-500/10 dark:group-hover:to-pink-500/10 transition-all duration-300"></div>
+            
+            <div class="relative z-10">
+              <!-- Icon with Badge -->
+              <div class="flex items-start justify-between mb-4">
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-purple-500 to-pink-500 dark:from-purple-600 dark:to-pink-600 rounded-xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-transform shadow-lg">
+                  <i class="fas fa-briefcase text-white text-xl sm:text-2xl"></i>
+                </div>
+                <span class="bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 text-xs font-bold px-2 py-1 rounded-full">
+                  #<%= index + 1 %>
+                </span>
+              </div>
+
+              <h3 class="text-lg sm:text-xl font-bold text-gray-900 dark:text-white mb-2 group-hover:text-purple-600 dark:group-hover:text-purple-400 transition-colors line-clamp-2">
+                <%= exam.name %>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-2">
+                <%= exam.description&.truncate(80) %>
+              </p>
+
+              <div class="flex items-center justify-between text-xs text-gray-500 dark:text-gray-500 mb-4">
+                <div class="flex items-center gap-1">
+                  <i class="fas fa-users"></i>
+                  <span>2.5L+</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <i class="fas fa-book"></i>
+                  <span>450+ Tests</span>
+                </div>
+                <div class="flex items-center gap-1">
+                  <i class="fas fa-star text-yellow-500"></i>
+                  <span>4.8</span>
+                </div>
+              </div>
+
+              <div class="flex items-center justify-between">
+                <span class="text-sm font-semibold text-purple-600 dark:text-purple-400 group-hover:gap-2 flex items-center gap-1 transition-all">
+                  Explore Now
+                  <i class="fas fa-arrow-right group-hover:translate-x-1 transition-transform"></i>
+                </span>
+                <span class="text-xs text-gray-400 dark:text-gray-600">
+                  <i class="fas fa-clock"></i> Updated today
+                </span>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+    </div>
+
+    <div class="text-center mt-10 sm:mt-12">
+      <%= link_to exams_path, class: "inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-purple-600 to-pink-600 dark:from-purple-500 dark:to-pink-500 text-white rounded-xl font-bold hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105 shadow-lg" do %>
+        View All Exams
+        <i class="fas fa-arrow-right"></i>
+      <% end %>
+    </div>
+  </div>
+</section>
