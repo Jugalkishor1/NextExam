@@ -9,6 +9,7 @@ class MockTestsController < ApplicationController
   end
 
   def show
+    @quiz = Quiz.first
     @mock_test = MockTest.includes(:exam, :mock_test_questions => {:question => :options})
                         .find(params[:id])
     @questions_count = @mock_test.mock_test_questions.count

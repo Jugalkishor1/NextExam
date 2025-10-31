@@ -1,226 +1,3 @@
-<style>
-  .result-container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 2rem 1rem;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  }
-
-  .result-hero {
-    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    border-radius: 20px;
-    padding: 3rem 2.5rem;
-    text-align: center;
-    color: white;
-    margin-bottom: 2rem;
-    box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3);
-  }
-
-  .result-icon {
-    width: 80px;
-    height: 80px;
-    margin: 0 auto 1.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-center;
-    font-size: 3rem;
-  }
-
-  .result-hero h1 {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin: 0 0 0.5rem 0;
-  }
-
-  .result-subtitle {
-    font-size: 1.125rem;
-    opacity: 0.95;
-  }
-
-  .score-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 2rem;
-  }
-
-  .score-card {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 2rem 1.5rem;
-    text-align: center;
-  }
-
-  .score-card-icon {
-    width: 48px;
-    height: 48px;
-    margin: 0 auto 1rem;
-    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-center;
-    color: white;
-  }
-
-  .score-card-label {
-    font-size: 0.875rem;
-    color: #64748b;
-    margin-bottom: 0.5rem;
-  }
-
-  .score-card-value {
-    font-size: 2rem;
-    font-weight: 700;
-    color: #1a202c;
-  }
-
-  .score-card-subtext {
-    font-size: 0.875rem;
-    color: #94a3b8;
-    margin-top: 0.25rem;
-  }
-
-  .performance-badge {
-    display: inline-block;
-    padding: 0.75rem 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    font-size: 1.125rem;
-    margin: 1rem 0;
-  }
-
-  .performance-excellent {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .performance-good {
-    background: #dbeafe;
-    color: #1e40af;
-  }
-
-  .performance-average {
-    background: #fed7aa;
-    color: #92400e;
-  }
-
-  .performance-needs-improvement {
-    background: #fecaca;
-    color: #991b1b;
-  }
-
-  .detailed-analysis {
-    background: white;
-    border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .analysis-title {
-    font-size: 1.5rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0 0 1.5rem 0;
-  }
-
-  .analysis-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 0;
-    border-bottom: 1px solid #f1f5f9;
-  }
-
-  .analysis-row:last-child {
-    border-bottom: none;
-  }
-
-  .analysis-label {
-    color: #64748b;
-    font-size: 0.875rem;
-  }
-
-  .analysis-value {
-    font-weight: 600;
-    color: #1a202c;
-  }
-
-  .progress-bar {
-    width: 100%;
-    height: 8px;
-    background: #e2e8f0;
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 0.5rem;
-  }
-
-  .progress-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #f59e0b 0%, #ef4444 100%);
-    border-radius: 4px;
-    transition: width 1s ease;
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .btn {
-    padding: 0.875rem 2rem;
-    border-radius: 12px;
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-block;
-    transition: all 0.2s;
-    border: 2px solid;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, #f59e0b 0%, #ef4444 100%);
-    border-color: #f59e0b;
-    color: white;
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(245, 158, 11, 0.4);
-  }
-
-  .btn-secondary {
-    background: white;
-    border-color: #e2e8f0;
-    color: #475569;
-  }
-
-  .btn-secondary:hover {
-    border-color: #f59e0b;
-    color: #f59e0b;
-  }
-
-  @media (max-width: 640px) {
-    .score-cards {
-      grid-template-columns: 1fr;
-    }
-
-    .action-buttons {
-      flex-direction: column;
-    }
-
-    .btn {
-      width: 100%;
-      text-align: center;
-    }
-  }
-</style>
-
 <%
   total_questions = @attempt.mock_test.mock_test_questions.count
   correct_answers = @attempt.user_answers.where(is_correct: true).count
@@ -229,107 +6,140 @@
   percentage = @attempt.percentage_score
   
   performance_class = case percentage
-    when 80..100 then 'excellent'
-    when 60...80 then 'good'
-    when 40...60 then 'average'
-    else 'needs-improvement'
-  end
-  
-  performance_text = case percentage
-    when 80..100 then 'Excellent! 🎉'
-    when 60...80 then 'Good Job! 👍'
-    when 40...60 then 'Average 😊'
-    else 'Keep Practicing 💪'
+    when 80..100 then { bg: 'bg-green-100 dark:bg-green-900/30', text: 'text-green-700 dark:text-green-300', emoji: '🎉', label: 'Excellent!' }
+    when 60...80 then { bg: 'bg-blue-100 dark:bg-blue-900/30', text: 'text-blue-700 dark:text-blue-300', emoji: '👍', label: 'Good Job!' }
+    when 40...60 then { bg: 'bg-yellow-100 dark:bg-yellow-900/30', text: 'text-yellow-700 dark:text-yellow-300', emoji: '😊', label: 'Average' }
+    else { bg: 'bg-red-100 dark:bg-red-900/30', text: 'text-red-700 dark:text-red-300', emoji: '💪', label: 'Keep Practicing' }
   end
   
   total_marks = @attempt.mock_test.mock_test_questions.sum { |mtq| mtq.question.marks }
 %>
 
-<div class="result-container">
-  <div class="result-hero">
-    <div class="result-icon">
-      <%= percentage >= 60 ? '🎉' : '📚' %>
-    </div>
-    <h1>Test Completed!</h1>
-    <p class="result-subtitle"><%= @attempt.mock_test.title %></p>
-    <div class="performance-badge performance-<%= performance_class %>">
-      <%= performance_text %>
-    </div>
-  </div>
-
-  <div class="score-cards">
-    <div class="score-card">
-      <div class="score-card-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-      <div class="score-card-label">Score</div>
-      <div class="score-card-value"><%= percentage.round %>%</div>
-      <div class="score-card-subtext"><%= @attempt.score.to_f.round(1) %> / <%= total_marks.to_f.round(1) %> marks</div>
-    </div>
-
-    <div class="score-card">
-      <div class="score-card-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
-        </svg>
-      </div>
-      <div class="score-card-label">Correct Answers</div>
-      <div class="score-card-value"><%= correct_answers %></div>
-      <div class="score-card-subtext">out of <%= total_questions %></div>
-    </div>
-
-    <div class="score-card">
-      <div class="score-card-icon">
-        <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-      <div class="score-card-label">Time Taken</div>
-      <div class="score-card-value"><%= @attempt.time_taken %></div>
-      <div class="score-card-subtext">minutes</div>
-    </div>
-  </div>
-
-  <div class="detailed-analysis">
-    <h2 class="analysis-title">Detailed Analysis</h2>
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-6 sm:py-12">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     
-    <div class="analysis-row">
-      <span class="analysis-label">Total Questions</span>
-      <span class="analysis-value"><%= total_questions %></span>
-    </div>
-
-    <div class="analysis-row">
-      <span class="analysis-label">Correct Answers</span>
-      <span class="analysis-value" style="color: #10b981;"><%= correct_answers %></span>
-    </div>
-
-    <div class="analysis-row">
-      <span class="analysis-label">Wrong Answers</span>
-      <span class="analysis-value" style="color: #ef4444;"><%= wrong_answers %></span>
-    </div>
-
-    <div class="analysis-row">
-      <span class="analysis-label">Unattempted</span>
-      <span class="analysis-value" style="color: #f59e0b;"><%= unattempted %></span>
-    </div>
-
-    <div class="analysis-row">
-      <div style="flex: 1;">
-        <span class="analysis-label">Accuracy Rate</span>
-        <div class="progress-bar">
-          <div class="progress-fill" style="width: <%= percentage %>%"></div>
+    <!-- Hero Card -->
+    <div class="bg-gradient-to-br from-orange-500 via-red-500 to-pink-600 dark:from-orange-600 dark:via-red-600 dark:to-pink-700 rounded-2xl p-6 sm:p-10 text-white text-center mb-6 shadow-2xl relative overflow-hidden">
+      <!-- Decorative Elements -->
+      <div class="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32"></div>
+      <div class="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full blur-3xl -ml-48 -mb-48"></div>
+      
+      <div class="relative z-10">
+        <div class="w-20 h-20 bg-white/20 backdrop-blur-md rounded-full flex items-center justify-center text-5xl mx-auto mb-6">
+          <%= percentage >= 60 ? '🎉' : '📚' %>
+        </div>
+        
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold mb-3">Test Completed!</h1>
+        <p class="text-lg sm:text-xl opacity-95 mb-4"><%= @attempt.mock_test.title %></p>
+        
+        <div class="inline-block px-6 py-3 <%= performance_class[:bg] %> <%= performance_class[:text] %> rounded-full font-bold text-lg backdrop-blur-sm">
+          <%= performance_class[:emoji] %> <%= performance_class[:label] %>
         </div>
       </div>
-      <span class="analysis-value"><%= percentage.round %>%</span>
     </div>
-  </div>
 
-  <div class="action-buttons">
-    <%= link_to "View Solutions", solutions_user_mock_test_attempt_path(@attempt), class: "btn btn-primary" %>
-    <%= link_to "My Attempts", my_attempts_mock_test_path(@attempt.mock_test), class: "btn btn-secondary" %>
-    <%= link_to "Try Again", start_attempt_mock_test_path(@attempt.mock_test), method: :post, class: "btn btn-secondary", data: { turbo: false } %>
-    <%= link_to "Back to Tests", mock_tests_path, class: "btn btn-secondary" %>
+    <!-- Stats Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
+      <!-- Score -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl mb-4 mx-auto">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-2">Score</p>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white text-center"><%= percentage.round %>%</p>
+        <p class="text-xs text-gray-500 dark:text-gray-500 text-center mt-1">
+          <%= @attempt.score.to_f.round(1) %> / <%= total_marks.to_f.round(1) %> marks
+        </p>
+      </div>
+
+      <!-- Correct Answers -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl mb-4 mx-auto">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-2">Correct Answers</p>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white text-center"><%= correct_answers %></p>
+        <p class="text-xs text-gray-500 dark:text-gray-500 text-center mt-1">out of <%= total_questions %></p>
+      </div>
+
+      <!-- Time Taken -->
+      <div class="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div class="flex items-center justify-center w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-xl mb-4 mx-auto">
+          <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 text-center mb-2">Time Taken</p>
+        <p class="text-3xl font-bold text-gray-900 dark:text-white text-center"><%= @attempt.time_taken %></p>
+        <p class="text-xs text-gray-500 dark:text-gray-500 text-center mt-1">minutes</p>
+      </div>
+    </div>
+
+    <!-- Detailed Analysis -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 sm:p-8 border border-gray-200 dark:border-gray-700 shadow-sm mb-6">
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-6">Detailed Analysis</h2>
+      
+      <div class="space-y-4">
+        <div class="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-gray-700">
+          <span class="text-gray-600 dark:text-gray-400">Total Questions</span>
+          <span class="font-semibold text-gray-900 dark:text-white"><%= total_questions %></span>
+        </div>
+
+        <div class="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-gray-700">
+          <span class="text-gray-600 dark:text-gray-400">Correct Answers</span>
+          <span class="font-semibold text-green-600 dark:text-green-400"><%= correct_answers %></span>
+        </div>
+
+        <div class="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-gray-700">
+          <span class="text-gray-600 dark:text-gray-400">Wrong Answers</span>
+          <span class="font-semibold text-red-600 dark:text-red-400"><%= wrong_answers %></span>
+        </div>
+
+        <div class="flex justify-between items-center pb-4 border-b border-gray-100 dark:border-gray-700">
+          <span class="text-gray-600 dark:text-gray-400">Unattempted</span>
+          <span class="font-semibold text-yellow-600 dark:text-yellow-400"><%= unattempted %></span>
+        </div>
+
+        <div class="pt-2">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-gray-600 dark:text-gray-400 font-medium">Accuracy Rate</span>
+            <span class="font-bold text-gray-900 dark:text-white"><%= percentage.round %>%</span>
+          </div>
+          <div class="w-full h-3 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            <div class="h-full bg-gradient-to-r from-orange-500 to-red-500 dark:from-orange-600 dark:to-red-600 rounded-full transition-all duration-1000" 
+                 style="width: <%= percentage %>%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+      <%= link_to solutions_user_mock_test_attempt_path(@attempt), class: "flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-gradient-to-r from-orange-600 to-red-600 dark:from-orange-500 dark:to-red-500 hover:from-orange-700 hover:to-red-700 text-white rounded-xl font-semibold transition-all shadow-lg hover:shadow-xl" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        View Solutions
+      <% end %>
+
+      <%= link_to my_attempts_mock_test_path(@attempt.mock_test), class: "flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-orange-500 dark:hover:border-orange-500 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 rounded-xl font-semibold transition-all" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        My Attempts
+      <% end %>
+
+      <%= link_to start_attempt_mock_test_path(@attempt.mock_test), method: :post, data: { turbo: false }, class: "flex-1 flex items-center justify-center gap-2 px-6 py-3.5 bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 hover:border-orange-500 dark:hover:border-orange-500 text-gray-700 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 rounded-xl font-semibold transition-all" do %>
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Try Again
+      <% end %>
+    </div>
+
   </div>
 </div>
