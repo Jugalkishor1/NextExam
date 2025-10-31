@@ -16,7 +16,11 @@ class MockTestsController < ApplicationController
   end
 
   def start_attempt
-    # Create new mock test attempt
+    existing_attempt = current_user.user_mock_test_attempts.find_by(mock_test: @mock_test)
+    if existing_attempt.present?
+      existing_attempt.destroy
+    end
+    
     @attempt = current_user.user_mock_test_attempts.create!(
       mock_test: @mock_test,
       status: :in_progress,
