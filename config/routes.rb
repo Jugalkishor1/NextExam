@@ -26,4 +26,20 @@ Rails.application.routes.draw do
       get :solutions
     end
   end
+
+  resources :mock_tests, only: [:index, :show] do
+    member do
+      post :start_attempt  # Create new attempt
+      get :my_attempts     # Show all user's attempts
+    end
+  end
+
+  resources :user_mock_test_attempts, only: [:show, :update] do
+    member do
+      post :submit_test    # Final submission
+      patch :save_answer   # Save individual answer
+      get :result         # View results
+      get :solutions      # View solutions
+    end
+  end
 end

@@ -13,8 +13,12 @@ class MockTest < ApplicationRecord
   
   scope :published_tests, -> { where(status: :published) }
   
+  # def calculate_total_marks
+  #   questions.sum(:marks)
+  # end
+  
   def calculate_total_marks
-    questions.sum(:marks)
+    mock_test_questions.includes(:question).sum { |mtq| mtq.question.marks }
   end
   
   def questions_count

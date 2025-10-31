@@ -1,0 +1,62 @@
+<div class="container">
+  <div class="test-header">
+    <h1><%= @mock_test.title %></h1>
+    <div id="timer"></div>
+  </div>
+
+  <%= form_with url: submit_mock_test_path(@mock_test), method: :post, local: true do |f| %>
+    <% @questions.each_with_index do |question, index| %>
+      <div class="question-card">
+        <div class="question-header">
+          <span class="question-number">Question <%= index + 1 %></span>
+          <span class="subject-badge"><%= question.subject.name %></span>
+          <span class="marks">Marks: <%= question.marks %></span>
+        </div>
+        
+        <div class="question-content">
+          <p><%= question.content %></p>
+        </div>
+        
+        <div class="options">
+          <% question.options.each do |option| %>
+            <div class="option">
+              <%= radio_button_tag "answers[#{question.id}]", option.id, 
+                  @user_answers[question.id]&.option_id == option.id,
+                  id: "option_#{option.id}" %>
+              <%= label_tag "option_#{option.id}", option.content %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <div class="submit-section">
+      <%= f.submit "Submit Test", class: "btn btn-success", data: { confirm: "Are you sure you want to submit?" } %>
+    </div>
+  <% end %>
+</div>
+
+<script>
+  // Timer functionality
+  const duration = <%= @mock_test.duration %> * 60; // Convert to seconds
+  const startTime = new Date('<%= @attempt.started_at.iso8601 %>');
+  const endTime = new Date(startTime.getTime() + duration * 1000);
+  
+  function updateTimer() {
+    const now = new Date();
+    const remaining = Math.max(0, Math.floor((endTime - now) / 1000));
+    
+    const minutes = Math.floor(remaining / 60);
+    const seconds = remaining % 60;
+    
+    document.getElementById('timer').textContent = 
+      `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (remaining <= 0) {
+      document.querySelector('form').submit();
+    }
+  }
+  
+  updateTimer();
+  setInterval(updateTimer, 1000);
+</script>

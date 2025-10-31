@@ -1,0 +1,237 @@
+<header class="bg-white dark:bg-gray-800 border-b border-slate-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-1 text-sm text-slate-500 dark:text-gray-400">
+      <%= link_to "Mock Tests", mock_test_path, class: "text-indigo-600 hover:text-indigo-500 dark:text-indigo-400" %>
+      <span>/</span>
+      <%= link_to @mock_test.title, mock_test_path(@mock_test), class: "text-indigo-600 hover:text-indigo-500 dark:text-indigo-400" %>
+      <span>/</span>
+      <span class="font-medium text-slate-900 dark:text-gray-100">Review</span>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="flex gap-3 w-full sm:w-auto justify-between sm:justify-end">
+      <%= link_to my_attempts_quiz_path(@mock_test),
+            class: "px-4 py-2 rounded-lg border-2 border-slate-200 dark:border-gray-700 text-slate-700 dark:text-gray-200 font-semibold text-sm hover:border-indigo-500 hover:text-indigo-500 flex items-center gap-2" do %>
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        My Attempts
+      <% end %>
+
+      <%= link_to start_attempt_quiz_path(@mock_test), method: :post, data: { turbo: false },
+            class: "px-4 py-2 rounded-lg font-semibold text-sm text-white bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition flex items-center gap-2" do %>
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Retry Quiz
+      <% end %>
+    </div>
+  </div>
+</header>
+
+<%
+  total_questions = @questions.count
+  correct_count = @attempt.user_answers.where(is_correct: true).count
+  wrong_count = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
+  skipped_count = total_questions - @attempt.user_answers.where.not(option_id: nil).count
+  percentage = @attempt.percentage_score
+  performance_text = case percentage
+    when 80..100 then '🎉 Excellent!'
+    when 60...80 then '👍 Good Job!'
+    when 40...60 then '😊 Average'
+    else '💪 Keep Practicing'
+  end
+%>
+
+<!-- Main Layout -->
+<main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-[350px,1fr] gap-6">
+
+  <!-- Sidebar -->
+  <aside class="flex flex-col gap-6 sticky top-24">
+    <!-- Score -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <div class="text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg py-6 mb-5">
+        <p class="text-sm opacity-90">Your Score</p>
+        <p class="text-5xl font-extrabold"><%= percentage.round %>%</p>
+        <span class="inline-block mt-3 px-4 py-1 bg-white/20 rounded-full text-sm font-semibold"><%= performance_text %></span>
+      </div>
+
+      <div class="space-y-3">
+        <% [["✓", "Correct", correct_count, "bg-green-100 text-green-800"],
+            ["✗", "Wrong", wrong_count, "bg-red-100 text-red-800"],
+            ["⊝", "Skipped", skipped_count, "bg-yellow-100 text-yellow-800"],
+            ["🕒", "Time", "#{@attempt.time_taken}m", "bg-indigo-100 text-indigo-800"]].each do |icon, label, val, color| %>
+          <div class="flex justify-between items-center border-b border-slate-200 dark:border-gray-700 last:border-0 py-2">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 flex items-center justify-center rounded-md <%= color %> font-bold text-lg"><%= icon %></div>
+              <span class="text-sm text-slate-600 dark:text-gray-300"><%= label %></span>
+            </div>
+            <span class="text-lg font-bold"><%= val %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18v2.586l-6.414 6.414V17l-4 4v-7.414L3 6.586z"/></svg>
+        Filter
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <button class="filter-chip bg-white dark:bg-gray-700 border-2 border-slate-200 dark:border-gray-600 text-slate-600 dark:text-gray-200 rounded-full px-3 py-1 text-xs font-semibold active" data-filter="all">All (<%= total_questions %>)</button>
+        <button class="filter-chip bg-green-100 text-green-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="correct">Correct (<%= correct_count %>)</button>
+        <button class="filter-chip bg-red-100 text-red-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="wrong">Wrong (<%= wrong_count %>)</button>
+        <button class="filter-chip bg-yellow-100 text-yellow-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="skipped">Skipped (<%= skipped_count %>)</button>
+      </div>
+    </div>
+
+    <!-- Questions Grid -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        Questions
+      </h3>
+      <div id="questionGrid" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2"></div>
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <section class="space-y-6 min-h-[70vh]" id="contentArea">
+    <!-- Cards rendered dynamically here -->
+  </section>
+</main>
+
+<script>
+  window.quizQuestions = <%= raw(
+    @questions.map.with_index(1) do |q, i|
+      user_answer = @attempt.user_answers.find_by(question_id: q.id)
+      {
+        number: i,
+        content: q.content,
+        status: if user_answer.nil?
+                  "skipped"
+                elsif user_answer.is_correct
+                  "correct"
+                else
+                  "wrong"
+                end,
+        user_answer: user_answer&.option_id,
+        correct_option: q.options.find_by(is_correct: true)&.id,
+        options: q.options.map { |o| { id: o.id, text: o.content } }
+      }
+    end.to_json
+  ) %>;
+  
+  document.addEventListener("DOMContentLoaded", () => {
+  const questionGrid = document.getElementById("questionGrid");
+  const contentArea = document.getElementById("contentArea");
+  const filterChips = document.querySelectorAll(".filter-chip");
+
+  // 🧩 Get all questions from Rails (injected via data-* or global variable)
+  const questions = window.quizQuestions || []; // Example: [{id, content, user_answer, correct_option, status}, ...]
+  let activeFilter = "all";
+  let currentIndex = 0;
+
+  // 🧠 Utility: get filtered questions
+  function getFilteredQuestions() {
+    if (activeFilter === "all") return questions;
+    return questions.filter(q => q.status === activeFilter);
+  }
+
+  // 🏗️ Render Grid
+  function renderGrid() {
+    questionGrid.innerHTML = "";
+    questions.forEach((q, idx) => {
+      const colorClass =
+        q.status === "correct"
+          ? "bg-green-100 text-green-700 border-green-300"
+          : q.status === "wrong"
+          ? "bg-red-100 text-red-700 border-red-300"
+          : "bg-yellow-100 text-yellow-700 border-yellow-300";
+
+      const btn = document.createElement("button");
+      btn.className = `w-8 h-8 flex items-center justify-center text-sm font-semibold rounded-md border ${colorClass} hover:scale-110 transition`;
+      btn.textContent = idx + 1;
+      btn.addEventListener("click", () => showQuestion(idx));
+      questionGrid.appendChild(btn);
+    });
+  }
+
+  function showQuestion(index) {
+    const filtered = getFilteredQuestions();
+    const q = filtered[index];
+    if (!q) return;
+
+    currentIndex = index;
+    contentArea.innerHTML = `
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-semibold text-lg">Question ${q.number}</h2>
+          <span class="text-sm font-semibold ${
+            q.status === "correct"
+              ? "text-green-600"
+              : q.status === "wrong"
+              ? "text-red-600"
+              : "text-yellow-600"
+          }">${q.status.toUpperCase()}</span>
+        </div>
+        <p class="text-base mb-4">${q.content}</p>
+
+        <ul class="space-y-2">
+          ${q.options
+            .map(opt => {
+              const isSelected = q.user_answer === opt.id;
+              const isCorrect = q.correct_option === opt.id;
+
+              let classes = "p-3 border rounded-lg";
+              if (isCorrect)
+                classes +=
+                  " border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700";
+              else if (isSelected)
+                classes +=
+                  " border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700";
+              else classes += " border-slate-200 dark:border-gray-700";
+
+              return `<li class="${classes}">${opt.text}</li>`;
+            })
+            .join("")}
+        </ul>
+
+        <div class="flex justify-between mt-6">
+          <button id="prevBtn" class="px-4 py-2 rounded-md bg-slate-200 dark:bg-gray-700 hover:bg-slate-300 dark:hover:bg-gray-600 font-medium text-sm">← Previous</button>
+          <button id="nextBtn" class="px-4 py-2 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white font-medium text-sm">Next →</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("prevBtn").addEventListener("click", showPrev);
+    document.getElementById("nextBtn").addEventListener("click", showNext);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function showNext() {
+    const filtered = getFilteredQuestions();
+    if (currentIndex < filtered.length - 1) showQuestion(currentIndex + 1);
+  }
+
+  function showPrev() {
+    if (currentIndex > 0) showQuestion(currentIndex - 1);
+  }
+
+  filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+      filterChips.forEach(c => c.classList.remove("active", "ring-2", "ring-indigo-400"));
+      chip.classList.add("active", "ring-2", "ring-indigo-400");
+      activeFilter = chip.dataset.filter;
+      currentIndex = 0;
+      showQuestion(0);
+    });
+  });
+
+  renderGrid();
+  showQuestion(0);
+});
+
+</script>

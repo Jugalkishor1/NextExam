@@ -1,0 +1,18 @@
+<div class="container mx-auto p-4">
+  <h1 class="text-3xl font-semibold text-center mb-6">Available Mock Tests</h1>
+  
+  <div class="mock-tests-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @mock_tests.each do |mock_test| %>
+      <div class="mock-test-card bg-white shadow-md rounded-lg p-4">
+        <h3 class="text-2xl font-semibold text-gray-800 mb-2"><%= mock_test.title %></h3>
+        <p class="text-gray-600 mb-4"><%= mock_test.description %></p>
+        <div class="test-info text-sm text-gray-500 space-x-4 mb-4">
+          <span>Duration: <%= mock_test.duration %> minutes</span>
+          <span>Total Marks: <%= mock_test.total_marks %></span>
+          <span>Questions: <%= mock_test.mock_test_questions.count %></span>
+        </div>
+        <%= link_to "View Details", mock_test_path(mock_test), class: "btn btn-primary bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600" %>
+      </div>
+    <% end %>
+  </div>
+</div>
