@@ -1,923 +1,237 @@
-<style>
-  * { box-sizing: border-box; }
-  
-  body {
-    background: #f1f5f9;
-    margin: 0;
-    padding: 0;
-  }
-
-  .review-container {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-  }
-
-  /* Top Header */
-  .top-header {
-    background: white;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  }
-
-  .header-inner {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .breadcrumb {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 0.875rem;
-    color: #64748b;
-  }
-
-  .breadcrumb a {
-    color: #667eea;
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-
-  .breadcrumb a:hover {
-    color: #764ba2;
-  }
-
-  .header-actions {
-    display: flex;
-    gap: 1rem;
-  }
-
-  .action-btn {
-    padding: 0.625rem 1.25rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    text-decoration: none;
-    transition: all 0.2s;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .btn-secondary {
-    background: white;
-    border: 2px solid #e2e8f0;
-    color: #475569;
-  }
-
-  .btn-secondary:hover {
-    border-color: #667eea;
-    color: #667eea;
-  }
-
-  .btn-primary {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border: none;
-    color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-
-  /* Main Layout */
-  .main-layout {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 2rem;
-    display: grid;
-    grid-template-columns: 350px 1fr;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  /* Sidebar */
-  .sidebar {
-    position: sticky;
-    top: 90px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-
-  .sidebar-card {
-    background: white;
-    border-radius: 16px;
-    padding: 1.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  }
-
-  .card-title {
-    font-size: 1rem;
-    font-weight: 700;
-    color: #1a202c;
-    margin: 0 0 1.25rem 0;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  /* Score Card */
-  .score-display {
-    text-align: center;
-    padding: 1.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    border-radius: 12px;
-    color: white;
-    margin-bottom: 1.5rem;
-  }
-
-  .score-label {
-    font-size: 0.875rem;
-    opacity: 0.9;
-    margin-bottom: 0.5rem;
-  }
-
-  .score-value {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1;
-  }
-
-  .performance-label {
-    display: inline-block;
-    margin-top: 0.75rem;
-    padding: 0.375rem 1rem;
-    background: rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    font-size: 0.875rem;
-    font-weight: 600;
-  }
-
-  /* Stats */
-  .stats-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  .stat-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 0;
-    border-bottom: 1px solid #f1f5f9;
-  }
-
-  .stat-row:last-child {
-    border-bottom: none;
-  }
-
-  .stat-info {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .stat-icon {
-    width: 36px;
-    height: 36px;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.125rem;
-  }
-
-  .icon-correct {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .icon-wrong {
-    background: #fee2e2;
-    color: #991b1b;
-  }
-
-  .icon-skipped {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .icon-time {
-    background: #e0e7ff;
-    color: #4338ca;
-  }
-
-  .stat-label {
-    font-size: 0.875rem;
-    color: #64748b;
-  }
-
-  .stat-value {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #1a202c;
-  }
-
-  /* Question Grid */
-  .question-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 0.5rem;
-  }
-
-  .grid-item {
-    aspect-ratio: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid transparent;
-  }
-
-  .grid-item.correct {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .grid-item.wrong {
-    background: #fee2e2;
-    color: #991b1b;
-  }
-
-  .grid-item.skipped {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .grid-item.active {
-    border-color: #667eea;
-    transform: scale(1.1);
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-  }
-
-  .grid-item:hover:not(.active) {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-
-  /* Filters */
-  .filter-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .filter-chip {
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-    border: 2px solid;
-  }
-
-  .filter-chip.all {
-    background: white;
-    border-color: #e2e8f0;
-    color: #64748b;
-  }
-
-  .filter-chip.all.active {
-    background: #667eea;
-    border-color: #667eea;
-    color: white;
-  }
-
-  .filter-chip.correct {
-    background: #d1fae5;
-    border-color: #10b981;
-    color: #065f46;
-  }
-
-  .filter-chip.correct.active {
-    background: #10b981;
-    color: white;
-  }
-
-  .filter-chip.wrong {
-    background: #fee2e2;
-    border-color: #ef4444;
-    color: #991b1b;
-  }
-
-  .filter-chip.wrong.active {
-    background: #ef4444;
-    color: white;
-  }
-
-  .filter-chip.skipped {
-    background: #fef3c7;
-    border-color: #f59e0b;
-    color: #92400e;
-  }
-
-  .filter-chip.skipped.active {
-    background: #f59e0b;
-    color: white;
-  }
-
-  /* Content Area */
-  .content-area {
-    min-height: 70vh;
-  }
-
-  .question-card {
-    background: white;
-    border-radius: 16px;
-    padding: 2.5rem;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    display: none;
-    animation: slideIn 0.3s ease;
-  }
-
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  .question-card.active {
-    display: block;
-  }
-
-  .question-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    border-radius: 8px;
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin-bottom: 1.5rem;
-  }
-
-  .status-correct {
-    background: #d1fae5;
-    color: #065f46;
-  }
-
-  .status-wrong {
-    background: #fee2e2;
-    color: #991b1b;
-  }
-
-  .status-skipped {
-    background: #fef3c7;
-    color: #92400e;
-  }
-
-  .question-number {
-    font-size: 0.875rem;
-    color: #667eea;
-    font-weight: 700;
-    margin-bottom: 1rem;
-  }
-
-  .question-text {
-    font-size: 1.375rem;
-    font-weight: 600;
-    color: #1a202c;
-    line-height: 1.6;
-    margin-bottom: 2rem;
-  }
-
-  .options-container {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    margin-bottom: 2rem;
-  }
-
-  .option {
-    display: flex;
-    align-items: flex-start;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: 12px;
-    border: 2px solid #e2e8f0;
-    transition: all 0.2s;
-  }
-
-  .option.correct {
-    background: #d1fae5;
-    border-color: #10b981;
-  }
-
-  .option.wrong {
-    background: #fee2e2;
-    border-color: #ef4444;
-  }
-
-  .option.neutral {
-    background: #f8fafc;
-  }
-
-  .option-icon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    font-weight: 700;
-    font-size: 1rem;
-  }
-
-  .option.correct .option-icon {
-    background: #10b981;
-    color: white;
-  }
-
-  .option.wrong .option-icon {
-    background: #ef4444;
-    color: white;
-  }
-
-  .option.neutral .option-icon {
-    background: white;
-    border: 2px solid #cbd5e1;
-    color: #94a3b8;
-  }
-
-  .option-content {
-    flex: 1;
-  }
-
-  .option-text {
-    font-size: 1rem;
-    color: #334155;
-    line-height: 1.6;
-    margin-bottom: 0.5rem;
-  }
-
-  .option-badge {
-    display: inline-block;
-    padding: 0.25rem 0.625rem;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
-
-  .badge-correct {
-    background: #10b981;
-    color: white;
-  }
-
-  .badge-your {
-    background: #667eea;
-    color: white;
-  }
-
-  .explanation {
-    background: #f8fafc;
-    border-left: 4px solid #667eea;
-    border-radius: 8px;
-    padding: 1.5rem;
-    margin-top: 2rem;
-  }
-
-  .explanation-title {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1rem;
-    font-weight: 700;
-    color: #475569;
-    margin-bottom: 0.75rem;
-  }
-
-  .explanation-text {
-    font-size: 0.9375rem;
-    color: #64748b;
-    line-height: 1.7;
-  }
-
-  /* Navigation */
-  .nav-footer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 3rem;
-    padding-top: 2rem;
-    border-top: 2px solid #f1f5f9;
-  }
-
-  .nav-btn {
-    padding: 0.875rem 2rem;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 0.9375rem;
-    border: none;
-    cursor: pointer;
-    transition: all 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-  }
-
-  .nav-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-  }
-
-  .nav-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  .question-counter {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: #64748b;
-  }
-
-  @media (max-width: 1024px) {
-    .main-layout {
-      grid-template-columns: 1fr;
-      padding: 1rem;
-    }
-
-    .sidebar {
-      position: static;
-      order: 2;
-    }
-
-    .content-area {
-      order: 1;
-    }
-
-    .question-grid {
-      grid-template-columns: repeat(6, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .header-inner {
-      padding: 0 1rem;
-      flex-direction: column;
-      align-items: stretch;
-    }
-
-    .header-actions {
-      width: 100%;
-      justify-content: space-between;
-    }
-
-    .question-card {
-      padding: 1.5rem;
-    }
-
-    .question-text {
-      font-size: 1.125rem;
-    }
-
-    .question-grid {
-      grid-template-columns: repeat(5, 1fr);
-    }
-
-    .nav-footer {
-      flex-direction: column;
-      gap: 1rem;
-    }
-
-    .nav-btn {
-      width: 100%;
-      justify-content: center;
-    }
-  }
-</style>
-
-<div class="review-container">
-  <!-- Top Header -->
-  <div class="top-header">
-    <div class="header-inner">
-      <div class="breadcrumb">
-        <%= link_to "Quizzes", quizzes_path %>
-        <span>/</span>
-        <%= link_to @quiz.title, quiz_path(@quiz) %>
-        <span>/</span>
-        <span style="color: #1a202c;">Review</span>
-      </div>
-      <div class="header-actions">
-        <%= link_to my_attempts_quiz_path(@quiz), class: "action-btn btn-secondary" do %>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
-          </svg>
-          My Attempts
-        <% end %>
-        <%= link_to start_attempt_quiz_path(@quiz), method: :post, class: "action-btn btn-primary", data: { turbo: false } do %>
-          <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
-          </svg>
-          Retry Quiz
-        <% end %>
-      </div>
-    </div>
-  </div>
-
-  <%
-    total_questions = @questions.count
-    correct_count = @attempt.user_answers.where(is_correct: true).count
-    wrong_count = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
-    skipped_count = total_questions - @attempt.user_answers.where.not(option_id: nil).count
-    percentage = @attempt.percentage_score
-    
-    performance_text = case percentage
-      when 80..100 then '🎉 Excellent!'
-      when 60...80 then '👍 Good Job!'
-      when 40...60 then '😊 Average'
-      else '💪 Keep Practicing'
-    end
-  %>
-
-  <!-- Main Layout -->
-  <div class="main-layout">
-    <!-- Sidebar -->
-    <div class="sidebar">
-      <!-- Score Card -->
-      <div class="sidebar-card">
-        <div class="score-display">
-          <div class="score-label">Your Score</div>
-          <div class="score-value"><%= percentage.round %>%</div>
-          <div class="performance-label"><%= performance_text %></div>
-        </div>
-
-        <div class="stats-list">
-          <div class="stat-row">
-            <div class="stat-info">
-              <div class="stat-icon icon-correct">✓</div>
-              <div class="stat-label">Correct</div>
-            </div>
-            <div class="stat-value"><%= correct_count %></div>
-          </div>
-
-          <div class="stat-row">
-            <div class="stat-info">
-              <div class="stat-icon icon-wrong">✗</div>
-              <div class="stat-label">Wrong</div>
-            </div>
-            <div class="stat-value"><%= wrong_count %></div>
-          </div>
-
-          <div class="stat-row">
-            <div class="stat-info">
-              <div class="stat-icon icon-skipped">⊝</div>
-              <div class="stat-label">Skipped</div>
-            </div>
-            <div class="stat-value"><%= skipped_count %></div>
-          </div>
-
-          <div class="stat-row">
-            <div class="stat-info">
-              <div class="stat-icon icon-time">
-                <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                </svg>
-              </div>
-              <div class="stat-label">Time</div>
-            </div>
-            <div class="stat-value"><%= @attempt.time_taken %>m</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Filters -->
-      <div class="sidebar-card">
-        <h3 class="card-title">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"/>
-          </svg>
-          Filter
-        </h3>
-        <div class="filter-chips">
-          <div class="filter-chip all active" data-filter="all">All (<%= total_questions %>)</div>
-          <div class="filter-chip correct" data-filter="correct">Correct (<%= correct_count %>)</div>
-          <div class="filter-chip wrong" data-filter="wrong">Wrong (<%= wrong_count %>)</div>
-          <div class="filter-chip skipped" data-filter="skipped">Skipped (<%= skipped_count %>)</div>
-        </div>
-      </div>
-
-      <!-- Question Grid -->
-      <div class="sidebar-card">
-        <h3 class="card-title">
-          <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/>
-          </svg>
-          Questions
-        </h3>
-        <div class="question-grid" id="questionGrid"></div>
-      </div>
-    </div>
-
-    <!-- Content Area -->
-    <div class="content-area">
-      <% @questions.each_with_index do |question, index| %>
-        <% 
-          user_answer = @user_answers[question.id]
-          user_option_id = user_answer&.option_id
-          is_correct = user_answer&.is_correct
-          is_skipped = user_option_id.nil?
-
-          card_status = is_skipped ? 'skipped' : (is_correct ? 'correct' : 'wrong')
-          status_text = is_skipped ? 'Not Attempted' : (is_correct ? 'Correct Answer' : 'Wrong Answer')
-          status_icon = is_skipped ? '⊝' : (is_correct ? '✓' : '✗')
-        %>
-
-        <div class="question-card" data-index="<%= index %>" data-status="<%= card_status %>">
-          <div class="question-status status-<%= card_status %>">
-            <%= status_icon %> <%= status_text %>
-          </div>
-
-          <div class="question-number">Question <%= index + 1 %> of <%= total_questions %></div>
-          <div class="question-text"><%= question.content %></div>
-
-          <div class="options-container">
-            <% question.options.each do |option| %>
-              <%
-                is_user_answer = option.id == user_option_id
-                is_correct_option = option.is_correct
-                
-                option_class = if is_correct_option
-                  'correct'
-                elsif is_user_answer
-                  'wrong'
-                else
-                  'neutral'
-                end
-                
-                option_icon_text = if is_correct_option
-                  '✓'
-                elsif is_user_answer
-                  '✗'
-                else
-                  '○'
-                end
-              %>
-
-              <div class="option <%= option_class %>">
-                <div class="option-icon"><%= option_icon_text %></div>
-                <div class="option-content">
-                  <div class="option-text"><%= option.content %></div>
-                  <% if is_correct_option %>
-                    <span class="option-badge badge-correct">Correct Answer</span>
-                  <% elsif is_user_answer %>
-                    <span class="option-badge badge-your">Your Answer</span>
-                  <% end %>
-                </div>
-              </div>
-            <% end %>
-          </div>
-
-          <div class="explanation">
-            <div class="explanation-title">
-              <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
-              </svg>
-              Explanation
-            </div>
-            <div class="explanation-text">
-              The correct answer is "<strong><%= question.options.find_by(is_correct: true).content %></strong>".
-              <% if is_correct %>
-                Great job! You selected the right answer.
-              <% elsif is_skipped %>
-                You didn't attempt this question. Make sure to answer all questions in your next attempt.
-              <% else %>
-                You selected "<%= question.options.find_by(id: user_option_id)&.content %>", which is incorrect. Review the correct answer to improve your understanding.
-              <% end %>
-            </div>
-          </div>
-
-          <div class="nav-footer">
-            <button class="nav-btn" id="prevBtn-<%= index %>" data-index="<%= index %>">
-              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
-              </svg>
-              Previous
-            </button>
-            
-            <span class="question-counter"><%= index + 1 %> / <%= total_questions %></span>
-            
-            <button class="nav-btn" id="nextBtn-<%= index %>" data-index="<%= index %>">
-              Next
-              <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-              </svg>
-            </button>
-          </div>
-        </div>
+<header class="bg-white dark:bg-gray-800 border-b border-slate-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row justify-between items-center gap-3">
+    <!-- Breadcrumb -->
+    <nav class="flex items-center gap-1 text-sm text-slate-500 dark:text-gray-400">
+      <%= link_to "Quizzes", quizzes_path, class: "text-indigo-600 hover:text-indigo-500 dark:text-indigo-400" %>
+      <span>/</span>
+      <%= link_to @quiz.title, quiz_path(@quiz), class: "text-indigo-600 hover:text-indigo-500 dark:text-indigo-400" %>
+      <span>/</span>
+      <span class="font-medium text-slate-900 dark:text-gray-100">Review</span>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="flex gap-3 w-full sm:w-auto justify-between sm:justify-end">
+      <%= link_to my_attempts_quiz_path(@quiz),
+            class: "px-4 py-2 rounded-lg border-2 border-slate-200 dark:border-gray-700 text-slate-700 dark:text-gray-200 font-semibold text-sm hover:border-indigo-500 hover:text-indigo-500 flex items-center gap-2" do %>
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        My Attempts
+      <% end %>
+
+      <%= link_to start_attempt_quiz_path(@quiz), method: :post, data: { turbo: false },
+            class: "px-4 py-2 rounded-lg font-semibold text-sm text-white bg-gradient-to-r from-indigo-500 to-purple-600 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition flex items-center gap-2" do %>
+        <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+        </svg>
+        Retry Quiz
       <% end %>
     </div>
   </div>
-</div>
+</header>
+
+<%
+  total_questions = @questions.count
+  correct_count = @attempt.user_answers.where(is_correct: true).count
+  wrong_count = @attempt.user_answers.where(is_correct: false).where.not(option_id: nil).count
+  skipped_count = total_questions - @attempt.user_answers.where.not(option_id: nil).count
+  percentage = @attempt.percentage_score
+  performance_text = case percentage
+    when 80..100 then '🎉 Excellent!'
+    when 60...80 then '👍 Good Job!'
+    when 40...60 then '😊 Average'
+    else '💪 Keep Practicing'
+  end
+%>
+
+<!-- Main Layout -->
+<main class="max-w-7xl mx-auto p-4 grid grid-cols-1 lg:grid-cols-[350px,1fr] gap-6">
+
+  <!-- Sidebar -->
+  <aside class="flex flex-col gap-6 sticky top-24">
+    <!-- Score -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <div class="text-center bg-gradient-to-r from-indigo-500 to-purple-600 text-white rounded-lg py-6 mb-5">
+        <p class="text-sm opacity-90">Your Score</p>
+        <p class="text-5xl font-extrabold"><%= percentage.round %>%</p>
+        <span class="inline-block mt-3 px-4 py-1 bg-white/20 rounded-full text-sm font-semibold"><%= performance_text %></span>
+      </div>
+
+      <div class="space-y-3">
+        <% [["✓", "Correct", correct_count, "bg-green-100 text-green-800"],
+            ["✗", "Wrong", wrong_count, "bg-red-100 text-red-800"],
+            ["⊝", "Skipped", skipped_count, "bg-yellow-100 text-yellow-800"],
+            ["🕒", "Time", "#{@attempt.time_taken}m", "bg-indigo-100 text-indigo-800"]].each do |icon, label, val, color| %>
+          <div class="flex justify-between items-center border-b border-slate-200 dark:border-gray-700 last:border-0 py-2">
+            <div class="flex items-center gap-3">
+              <div class="w-9 h-9 flex items-center justify-center rounded-md <%= color %> font-bold text-lg"><%= icon %></div>
+              <span class="text-sm text-slate-600 dark:text-gray-300"><%= label %></span>
+            </div>
+            <span class="text-lg font-bold"><%= val %></span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4h18v2.586l-6.414 6.414V17l-4 4v-7.414L3 6.586z"/></svg>
+        Filter
+      </h3>
+      <div class="flex flex-wrap gap-2">
+        <button class="filter-chip bg-white dark:bg-gray-700 border-2 border-slate-200 dark:border-gray-600 text-slate-600 dark:text-gray-200 rounded-full px-3 py-1 text-xs font-semibold active" data-filter="all">All (<%= total_questions %>)</button>
+        <button class="filter-chip bg-green-100 text-green-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="correct">Correct (<%= correct_count %>)</button>
+        <button class="filter-chip bg-red-100 text-red-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="wrong">Wrong (<%= wrong_count %>)</button>
+        <button class="filter-chip bg-yellow-100 text-yellow-800 rounded-full px-3 py-1 text-xs font-semibold" data-filter="skipped">Skipped (<%= skipped_count %>)</button>
+      </div>
+    </div>
+
+    <!-- Questions Grid -->
+    <div class="bg-white dark:bg-gray-800 rounded-xl p-6 shadow">
+      <h3 class="font-bold text-base mb-4 flex items-center gap-2">
+        <svg width="18" height="18" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+        Questions
+      </h3>
+      <div id="questionGrid" class="grid grid-cols-5 sm:grid-cols-6 md:grid-cols-8 gap-2"></div>
+    </div>
+  </aside>
+
+  <!-- Content Area -->
+  <section class="space-y-6 min-h-[70vh]" id="contentArea">
+    <!-- Cards rendered dynamically here -->
+  </section>
+</main>
 
 <script>
-  const cards = document.querySelectorAll('.question-card');
-  const grid = document.getElementById('questionGrid');
-  const filterChips = document.querySelectorAll('.filter-chip');
+  window.quizQuestions = <%= raw(
+    @questions.map.with_index(1) do |q, i|
+      user_answer = @attempt.user_answers.find_by(question_id: q.id)
+      {
+        number: i,
+        content: q.content,
+        status: if user_answer.nil?
+                  "skipped"
+                elsif user_answer.is_correct
+                  "correct"
+                else
+                  "wrong"
+                end,
+        user_answer: user_answer&.option_id,
+        correct_option: q.options.find_by(is_correct: true)&.id,
+        options: q.options.map { |o| { id: o.id, text: o.content } }
+      }
+    end.to_json
+  ) %>;
+  
+  document.addEventListener("DOMContentLoaded", () => {
+  const questionGrid = document.getElementById("questionGrid");
+  const contentArea = document.getElementById("contentArea");
+  const filterChips = document.querySelectorAll(".filter-chip");
+
+  // 🧩 Get all questions from Rails (injected via data-* or global variable)
+  const questions = window.quizQuestions || []; // Example: [{id, content, user_answer, correct_option, status}, ...]
+  let activeFilter = "all";
   let currentIndex = 0;
-  let filteredIndices = [];
-  let currentFilter = 'all';
 
-  // Initialize grid
-  cards.forEach((card, i) => {
-    const status = card.dataset.status;
-    const item = document.createElement('div');
-    item.className = `grid-item ${status}`;
-    item.textContent = i + 1;
-    item.dataset.index = i;
-    item.onclick = () => showQuestion(i);
-    grid.appendChild(item);
-  });
+  // 🧠 Utility: get filtered questions
+  function getFilteredQuestions() {
+    if (activeFilter === "all") return questions;
+    return questions.filter(q => q.status === activeFilter);
+  }
 
-  function updateFilteredIndices() {
-    filteredIndices = Array.from(cards).map((c, i) => i).filter(i => {
-      const status = cards[i].dataset.status;
-      return currentFilter === 'all' || status === currentFilter;
+  // 🏗️ Render Grid
+  function renderGrid() {
+    questionGrid.innerHTML = "";
+    questions.forEach((q, idx) => {
+      const colorClass =
+        q.status === "correct"
+          ? "bg-green-100 text-green-700 border-green-300"
+          : q.status === "wrong"
+          ? "bg-red-100 text-red-700 border-red-300"
+          : "bg-yellow-100 text-yellow-700 border-yellow-300";
+
+      const btn = document.createElement("button");
+      btn.className = `w-8 h-8 flex items-center justify-center text-sm font-semibold rounded-md border ${colorClass} hover:scale-110 transition`;
+      btn.textContent = idx + 1;
+      btn.addEventListener("click", () => showQuestion(idx));
+      questionGrid.appendChild(btn);
     });
   }
 
   function showQuestion(index) {
+    const filtered = getFilteredQuestions();
+    const q = filtered[index];
+    if (!q) return;
+
     currentIndex = index;
-    
-    cards.forEach((c, i) => {
-      c.classList.toggle('active', i === index);
-    });
+    contentArea.innerHTML = `
+      <div class="bg-white dark:bg-gray-800 rounded-xl shadow p-6">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="font-semibold text-lg">Question ${q.number}</h2>
+          <span class="text-sm font-semibold ${
+            q.status === "correct"
+              ? "text-green-600"
+              : q.status === "wrong"
+              ? "text-red-600"
+              : "text-yellow-600"
+          }">${q.status.toUpperCase()}</span>
+        </div>
+        <p class="text-base mb-4">${q.content}</p>
 
-    grid.querySelectorAll('.grid-item').forEach((item, i) => {
-      item.classList.toggle('active', i === index);
-    });
+        <ul class="space-y-2">
+          ${q.options
+            .map(opt => {
+              const isSelected = q.user_answer === opt.id;
+              const isCorrect = q.correct_option === opt.id;
 
-    const currentFilteredIndex = filteredIndices.indexOf(index);
-    
-    cards[index].querySelector(`#prevBtn-${index}`).disabled = currentFilteredIndex === 0;
-    cards[index].querySelector(`#nextBtn-${index}`).disabled = currentFilteredIndex === filteredIndices.length - 1;
+              let classes = "p-3 border rounded-lg";
+              if (isCorrect)
+                classes +=
+                  " border-green-400 bg-green-50 dark:bg-green-900/30 text-green-700";
+              else if (isSelected)
+                classes +=
+                  " border-red-400 bg-red-50 dark:bg-red-900/30 text-red-700";
+              else classes += " border-slate-200 dark:border-gray-700";
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+              return `<li class="${classes}">${opt.text}</li>`;
+            })
+            .join("")}
+        </ul>
+
+        <div class="flex justify-between mt-6">
+          <button id="prevBtn" class="px-4 py-2 rounded-md bg-slate-200 dark:bg-gray-700 hover:bg-slate-300 dark:hover:bg-gray-600 font-medium text-sm">← Previous</button>
+          <button id="nextBtn" class="px-4 py-2 rounded-md bg-indigo-500 hover:bg-indigo-600 text-white font-medium text-sm">Next →</button>
+        </div>
+      </div>
+    `;
+
+    document.getElementById("prevBtn").addEventListener("click", showPrev);
+    document.getElementById("nextBtn").addEventListener("click", showNext);
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
-  // Navigation
-  cards.forEach((card, index) => {
-    card.querySelector(`#prevBtn-${index}`).onclick = () => {
-      const currentPos = filteredIndices.indexOf(currentIndex);
-      if (currentPos > 0) showQuestion(filteredIndices[currentPos - 1]);
-    };
+  function showNext() {
+    const filtered = getFilteredQuestions();
+    if (currentIndex < filtered.length - 1) showQuestion(currentIndex + 1);
+  }
 
-    card.querySelector(`#nextBtn-${index}`).onclick = () => {
-      const currentPos = filteredIndices.indexOf(currentIndex);
-      if (currentPos < filteredIndices.length - 1) showQuestion(filteredIndices[currentPos + 1]);
-    };
-  });
+  function showPrev() {
+    if (currentIndex > 0) showQuestion(currentIndex - 1);
+  }
 
-  // Filters
   filterChips.forEach(chip => {
-    chip.onclick = () => {
-      filterChips.forEach(c => c.classList.remove('active'));
-      chip.classList.add('active');
-      currentFilter = chip.dataset.filter;
-      updateFilteredIndices();
-      if (filteredIndices.length > 0) showQuestion(filteredIndices[0]);
-    };
+    chip.addEventListener("click", () => {
+      filterChips.forEach(c => c.classList.remove("active", "ring-2", "ring-indigo-400"));
+      chip.classList.add("active", "ring-2", "ring-indigo-400");
+      activeFilter = chip.dataset.filter;
+      currentIndex = 0;
+      showQuestion(0);
+    });
   });
 
-  // Keyboard navigation
-  document.addEventListener('keydown', (e) => {
-    const currentPos = filteredIndices.indexOf(currentIndex);
-    if (e.key === 'ArrowLeft' && currentPos > 0) {
-      showQuestion(filteredIndices[currentPos - 1]);
-    } else if (e.key === 'ArrowRight' && currentPos < filteredIndices.length - 1) {
-      showQuestion(filteredIndices[currentPos + 1]);
-    }
-  });
-
-  // Initialize
-  updateFilteredIndices();
+  renderGrid();
   showQuestion(0);
+});
+
 </script>
