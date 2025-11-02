@@ -8,7 +8,6 @@ Rails.application.routes.draw do
   # Can be used by load balancers and uptime monitors to verify that the app is live.
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Defines the root path route ("/")
   root "home#index"
   resources :exams, only: [:index, :show]
   
@@ -29,17 +28,17 @@ Rails.application.routes.draw do
 
   resources :mock_tests, only: [:index, :show] do
     member do
-      post :start_attempt  # Create new attempt
-      get :my_attempts     # Show all user's attempts
+      post :start_attempt
+      get :my_attempts
     end
   end
 
   resources :user_mock_test_attempts, only: [:show, :update] do
     member do
-      post :submit_test    # Final submission
-      patch :save_answer   # Save individual answer
-      get :result         # View results
-      get :solutions      # View solutions
+      post :submit_test
+      patch :save_answer
+      get :result
+      get :solutions
     end
   end
 
