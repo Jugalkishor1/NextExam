@@ -4,6 +4,7 @@ class Question < ApplicationRecord
   belongs_to :quiz, optional: true
   belongs_to :exam, optional: true
   belongs_to :subject, optional: true
+  belongs_to :topic, optional: true
   
   has_many :options, dependent: :destroy
   has_many :mock_test_questions, dependent: :destroy
@@ -33,6 +34,6 @@ class Question < ApplicationRecord
   end
 
   def self.ransackable_associations(auth_object = nil)
-    ["exam", "quiz", "subject"]
+    ["exam", "quiz", "subject", "topic"]
   end
 end

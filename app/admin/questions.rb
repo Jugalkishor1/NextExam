@@ -1,7 +1,7 @@
 ActiveAdmin.register Question do
   menu priority: 4
 
-  permit_params :content, :question_type, :marks, :quiz_id, :exam_id, :subject_id,
+  permit_params :content, :question_type, :marks, :quiz_id, :exam_id, :subject_id, :topic_id,
                 options_attributes: [:id, :content, :is_correct, :_destroy]
 
   index do
@@ -13,6 +13,7 @@ ActiveAdmin.register Question do
     column :question_type
     column :marks
     column :subject
+    column :topic
     column :quiz
     column :exam
     column :options do |question|
@@ -24,6 +25,7 @@ ActiveAdmin.register Question do
   filter :content
   filter :question_type, as: :select, collection: Question.question_types
   filter :subject
+  filter :topic
   filter :quiz
   filter :exam
   filter :created_at
@@ -34,6 +36,12 @@ ActiveAdmin.register Question do
       f.input :question_type, as: :select, collection: Question.question_types.keys
       f.input :marks
       f.input :subject, as: :select, collection: Subject.all.order(:name)
+      
+      f.input :topic, as: :select, 
+              collection: f.object.subject_id ? Topic.where(subject_id: f.object.subject_id, status: :active).order(:name) : [],
+              include_blank: "Select a topic (optional)",
+              hint: "First select a subject to see available topics"
+      
       f.input :quiz, as: :select, collection: Quiz.all.order(:title), include_blank: true
       f.input :exam, as: :select, collection: Exam.all.order(:name), include_blank: true
     end
@@ -56,6 +64,7 @@ ActiveAdmin.register Question do
       row :question_type
       row :marks
       row :subject
+      row :topic
       row :quiz
       row :exam
       row :created_at
@@ -69,6 +78,20 @@ ActiveAdmin.register Question do
           status_tag(option.is_correct ? "Correct" : "Incorrect")
         end
       end
+    end
+  end
+
+  # Auto-populate form when coming from quiz page
+  controller do
+    def new
+      @question = Question.new
+      @question.quiz_id = params[:quiz_id] if params[:quiz_id]
+      if params[:quiz_id]
+        quiz = Quiz.find(params[:quiz_id])
+        @question.subject_id = quiz.subject_id
+        @question.topic_id = quiz.topic_id
+      end
+      new!
     end
   end
 end

@@ -42,4 +42,9 @@ Rails.application.routes.draw do
       get :solutions      # View solutions
     end
   end
+
+  namespace :topic_wise do
+    resources :subjects, only: [:index, :show]
+    resources :topics, only: [:show]
+  end
 end

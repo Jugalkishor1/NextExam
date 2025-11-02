@@ -3,6 +3,7 @@ class Quiz < ApplicationRecord
   enum status: { published: 0, archived: 2 }
   
   belongs_to :subject
+  belongs_to :topic, optional: true
   has_many :questions, dependent: :destroy
   has_many :user_quiz_attempts, dependent: :destroy
   
@@ -22,7 +23,7 @@ class Quiz < ApplicationRecord
     ["created_at", "description", "difficulty", "id", "id_value", "status", "subject_id", "time_limit", "title", "updated_at"]
   end
   def self.ransackable_associations(auth_object = nil)
-    ["questions", "subject"]
+    ["questions", "subject", "topic"]
   end
 
   def quiz_attempt_for_user(user)

@@ -1,6 +1,7 @@
 class Subject < ApplicationRecord
   has_many :quizzes, dependent: :destroy
   has_many :questions, dependent: :destroy
+  has_many :topics, dependent: :destroy
   
   validates :name, presence: true, uniqueness: true
   
