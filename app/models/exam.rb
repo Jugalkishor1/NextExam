@@ -5,7 +5,6 @@ class Exam < ApplicationRecord
   has_many :questions, dependent: :destroy
   
   validates :name, presence: true
-  validates :exam_type, presence: true
   validates :status, presence: true
   
   scope :published_exams, -> { where(status: :published) }

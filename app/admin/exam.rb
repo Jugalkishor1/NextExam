@@ -28,7 +28,6 @@ ActiveAdmin.register Exam do
     f.inputs 'Exam Details' do
       f.input :name
       f.input :description, as: :text
-      f.input :exam_type, as: :select, collection: ['SSC', 'Bank', 'Police', 'Railway'], include_blank: false
       f.input :status, as: :select, collection: Exam.statuses.keys, include_blank: false
     end
     f.actions

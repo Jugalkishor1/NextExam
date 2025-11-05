@@ -12,41 +12,51 @@
     </div>
 
     <!-- Subjects Grid -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <% @subjects.each do |subject| %>
-        <%= link_to topic_wise_subject_path(subject), class: "group block" do %>
-          <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-500">
-            
-            <!-- Icon Header -->
-            <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-center">
-              <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
-                <i class="fas fa-book text-4xl text-white"></i>
+    <% if @subjects.present? %>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <% @subjects.each do |subject| %>
+          <%= link_to topic_wise_subject_path(subject), class: "group block" do %>
+            <div class="rounded-2xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-500">
+              
+              <!-- Icon Header -->
+              <div class="bg-gradient-to-br from-indigo-500 to-purple-600 p-8 text-center">
+                <div class="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <i class="fas fa-book text-4xl text-white"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white">
+                  <%= subject.name %>
+                </h3>
               </div>
-              <h3 class="text-2xl font-bold text-white">
-                <%= subject.name %>
-              </h3>
-            </div>
 
-            <!-- Content -->
-            <div class="p-6 space-y-4">
-              <p class="text-gray-600 dark:text-gray-300">
-                <%= subject.description %>
-              </p>
+              <!-- Content -->
+              <div class="p-6 space-y-4">
+                <p class="text-gray-600 dark:text-gray-300">
+                  <%= subject.description.truncate(45) %>
+                </p>
 
-              <div class="flex items-center justify-between text-sm">
-                <span class="flex items-center font-semibold text-indigo-600 dark:text-indigo-400">
-                  <i class="fas fa-layer-group mr-2"></i>
-                  <%= subject.topics.count %> Topics
-                </span>
-                <span class="flex items-center text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
-                  Explore <i class="fas fa-arrow-right ml-1"></i>
-                </span>
+                <div class="flex items-center justify-between text-sm">
+                  <span class="flex items-center font-semibold text-indigo-600 dark:text-indigo-400">
+                    <i class="fas fa-layer-group mr-2"></i>
+                    <%= subject.topics.count %> Topics
+                  </span>
+                  <span class="flex items-center text-gray-500 dark:text-gray-400 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors duration-300">
+                    Explore <i class="fas fa-arrow-right ml-1"></i>
+                  </span>
+                </div>
               </div>
             </div>
-          </div>
+          <% end %>
         <% end %>
-      <% end %>
-    </div>
+      </div>
+    <% else %>
+      <div class="col-span-full text-center py-16 text-gray-600 dark:text-gray-400">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-12 h-12 mx-auto mb-3 opacity-60" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <h3 class="text-lg font-semibold mb-1">No Subjects available</h3>
+        <p>Check back later for new practice quizzes</p>
+      </div>
+    <% end %>
 
   </div>
 </div>
