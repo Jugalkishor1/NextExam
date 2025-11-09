@@ -1,4 +1,7 @@
 Rails.application.routes.draw do
+  
+  get 'physical_tests', to: "physical_tests#index"
+  post "physical_tests/calculate", to: "physical_tests#calculate"
   devise_for :users
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
