@@ -1,90 +1,4 @@
 <style>  
-  .test-attempt-container {
-    max-width: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
-    background: #f8fafc;
-    min-height: 100vh;
-  }
-
-  .test-header {
-    background: white;
-    border-bottom: 2px solid #e2e8f0;
-    padding: 1rem 2rem;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-  }
-
-  .header-content {
-    max-width: 1400px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .test-title {
-    font-size: 1.125rem;
-    font-weight: 600;
-    color: #1a202c;
-    margin: 0;
-  }
-
-  .header-controls {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-  }
-
-  .timer {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1.5rem;
-    background: #fef3c7;
-    border: 2px solid #fbbf24;
-    border-radius: 12px;
-    font-weight: 600;
-    color: #92400e;
-  }
-
-  .timer.warning {
-    background: #fee2e2;
-    border-color: #ef4444;
-    color: #991b1b;
-    animation: pulse 1s infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
-  }
-
-  .timer-icon {
-    width: 20px;
-    height: 20px;
-  }
-
-  .submit-btn {
-    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-    color: white;
-    padding: 0.75rem 2rem;
-    border-radius: 10px;
-    border: none;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-
-  .submit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
-  }
-
   .test-body {
     max-width: 1400px;
     margin: 0 auto;
@@ -380,20 +294,25 @@
   }
 </style>
 
-<div class="test-attempt-container">
-  <div class="test-header">
-    <div class="header-content">
-      <h1 class="test-title"><%= @mock_test.title %></h1>
+<div class="max-w-7xl mx-auto">
+  <div class="sticky top-0 z-50 bg-white dark:bg-gray-900 border-b-2 border-gray-200 dark:border-gray-700 shadow-md">
+    <div class="mx-auto flex justify-between items-center gap-8 px-6 py-4">
+      <h1 class="text-lg font-semibold text-gray-900 dark:text-white m-0"><%= @mock_test.title %></h1>
       
-      <div class="header-controls">
-        <div class="timer" id="timer" data-time-limit="<%= @mock_test.duration %>">
-          <svg class="timer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+      <div class="flex items-center gap-6">
+        <div id="timer" data-time-limit="<%= @mock_test.duration %>" 
+            class="flex items-center gap-2 py-3 px-6 bg-amber-100 border-2 border-amber-400 text-amber-800 dark:bg-amber-900 dark:border-amber-700 dark:text-amber-200 font-semibold rounded-xl transition-all duration-300">
+          <svg class="w-5 h-5 dark:text-white dark:bg-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <span id="timer-display">--:--</span>
+          <span id="timer-display" class="dark:text-white">--:--</span>
         </div>
 
-        <button class="submit-btn" id="submitTestBtn">Submit Test</button>
+        <button id="submitTestBtn" 
+                class="bg-gradient-to-r from-emerald-500 to-emerald-600 hover:-translate-y-0.5 hover:shadow-lg text-white font-semibold py-3 px-8 rounded-lg transition-all duration-200">
+          Submit Test
+        </button>
       </div>
     </div>
   </div>
