@@ -3,9 +3,20 @@ class QuizzesController < ApplicationController
   before_action :set_quiz, only: [:show, :start_attempt]
 
   def index
+    @subjects = Subject.all
+
     @quizzes = Quiz.includes(:subject)
-                   .where(status: :published)
-                   .order(created_at: :desc)
+                  .where(status: :published)
+                  .order(created_at: :desc)
+
+    if params[:subject_id].present?
+      @quizzes = @quizzes.where(subject_id: params[:subject_id])
+    end
+
+    respond_to do |format|
+      format.html # for full page load
+      format.turbo_stream # for turbo updates
+    end
   end
 
   def show
